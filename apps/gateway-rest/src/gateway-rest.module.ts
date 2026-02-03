@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
-import { GatewayRestController } from './gateway-rest.controller';
-import { GatewayRestService } from './gateway-rest.service';
 import { ConfigModule } from '@common/config/config.module';
 import { ConfigService } from '@nestjs/config';
 import { ClientProxyFactory, Transport } from '@nestjs/microservices';
+import { AuthController } from './controllers/auth.controller';
+import { AuthService } from './providers/auth/auth.service';
 
 @Module({
   imports: [ConfigModule],
-  controllers: [GatewayRestController],
+  controllers: [AuthController],
   providers: [
     {
       provide: 'AUTH_MICROSERVICE',
@@ -20,8 +20,7 @@ import { ClientProxyFactory, Transport } from '@nestjs/microservices';
         }),
       inject: [ConfigService],
     },
-
-    GatewayRestService,
+    AuthService,
   ],
 })
 export class GatewayRestModule {}
