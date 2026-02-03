@@ -1,8 +1,15 @@
 import { NestFactory } from '@nestjs/core';
 import { GatewayRestModule } from './gateway-rest.module';
+import { ConfigService } from '@nestjs/config';
+import { Logger } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(GatewayRestModule);
-  await app.listen(process.env.port ?? 3000);
+  const configService = app.get(ConfigService);
+
+  const port = configService.get<number>('PORT_GATEWAY_REST') as number;
+  Logger.log(`RESTful Gateway is running on port ${port}`, 'Bootstrap');
+  await app.listen(port);
 }
-bootstrap();
+
+void bootstrap().then();
