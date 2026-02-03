@@ -21,6 +21,13 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
-    "paths": {}
+    "paths": {
+      "@common/*": [
+        "libs/common/src/*"
+      ],
+      "@gateway-rest/*": [
+        "src/gateway-rest/*"
+      ]
+    }
   }
 }
