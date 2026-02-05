@@ -1,7 +1,6 @@
 import { SetMetadata } from '@nestjs/common';
+import { AuthorizationRole } from './auth.dto';
 
-export const IS_ANONYMOUS_KEY = 'isAnonymous';
-export const Anonymous = () => SetMetadata(IS_ANONYMOUS_KEY, true);
-
-export const IS_ADMIN_KEY = 'isAdmin';
-export const Admin = () => SetMetadata(IS_ADMIN_KEY, true);
+export const AUTHORIZATION_KEY = 'roles';
+export const Authorization = (...roles: AuthorizationRole[]) =>
+  SetMetadata(AUTHORIZATION_KEY, roles);

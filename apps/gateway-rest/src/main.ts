@@ -1,8 +1,10 @@
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { GatewayRestModule } from './gateway-rest.module';
 import { ConfigService } from '@nestjs/config';
 import { Logger } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { AuthGuard } from './providers/auth/auth.guard';
+import { AuthService } from './providers/auth/auth.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(GatewayRestModule);
@@ -24,6 +26,14 @@ async function bootstrap() {
       'Bootstrap',
     );
   }
+
+  app.useGlobalGuards(new AuthGuard(new Reflector(), app.get(AuthService)));
+  app.enableCors({
+    origin: 'localhost',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: 'Content-Type, Accept, Authorization',
+    credentials: true,
+  });
 
   const port = configService.get<number>('PORT_GATEWAY_REST') as number;
   Logger.log(`RESTful Gateway is running on port ${port}`, 'Bootstrap');

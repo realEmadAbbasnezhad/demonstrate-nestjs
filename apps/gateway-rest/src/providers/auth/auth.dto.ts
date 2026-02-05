@@ -27,12 +27,12 @@ export class SigninDto extends SignupDto {}
 
 export class JwtPayloadDto {
   @ApiProperty({
-    description: 'user has access to admin routes',
+    description: 'user role',
     example: false,
   })
-  admin: boolean;
+  role: AuthorizationRole;
 
-  @ApiProperty({ description: 'username of user', example: 'user0' })
+  @ApiProperty({ description: 'username of user', example: 'user' })
   username: string;
 
   @ApiProperty({ description: 'id of user', example: 0 })
@@ -45,4 +45,35 @@ export class AuthResponseDto {
 
   @ApiProperty({ description: 'user information' })
   user: JwtPayloadDto;
+}
+
+export enum AuthorizationRole {
+  Anonymous = 'Anonymous',
+  Customer = 'Customer',
+  Admin = 'Admin',
+}
+export class AuthorizationDto {
+  // raw authorization header
+  authorizationHeader: string;
+
+  // authorization header
+  requestedRole: AuthorizationRole;
+}
+export class AuthorizationRespondDto {
+  // does user have permission?
+  authorized: boolean;
+
+  @ApiProperty({ description: 'error message, if had' })
+  message: string | null;
+}
+export class AuthenticationDto {
+  // raw authorization header
+  authorizationHeader: string;
+}
+export class AuthenticationResponseDto {
+  // our user was valid?
+  authenticated: boolean;
+
+  // error message, if had
+  message: string | null;
 }

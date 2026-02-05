@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import { ClientProxyFactory, Transport } from '@nestjs/microservices';
 import { AuthController } from './controllers/auth.controller';
 import { AuthService } from './providers/auth/auth.service';
+import { AuthGuard } from './providers/auth/auth.guard';
 
 @Module({
   imports: [ConfigModule],
@@ -20,7 +21,9 @@ import { AuthService } from './providers/auth/auth.service';
         }),
       inject: [ConfigService],
     },
+
     AuthService,
+    AuthGuard,
   ],
 })
 export class GatewayRestModule {}
