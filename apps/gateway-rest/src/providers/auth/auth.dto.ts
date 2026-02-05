@@ -1,5 +1,6 @@
 import { IsString, IsNotEmpty, MinLength, Matches } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { AuthorizationRole } from '@contracts/microservice/auth/auth.dto';
 
 export class SignupDto {
   @ApiProperty({
@@ -22,7 +23,6 @@ export class SignupDto {
   @MinLength(8)
   password: string;
 }
-
 export class SigninDto extends SignupDto {}
 
 export class JwtPayloadDto {
@@ -45,35 +45,4 @@ export class AuthResponseDto {
 
   @ApiProperty({ description: 'user information' })
   user: JwtPayloadDto;
-}
-
-export enum AuthorizationRole {
-  Anonymous = 'Anonymous',
-  Customer = 'Customer',
-  Admin = 'Admin',
-}
-export class AuthorizationDto {
-  // raw authorization header
-  authorizationHeader: string;
-
-  // authorization header
-  requestedRole: AuthorizationRole;
-}
-export class AuthorizationRespondDto {
-  // does user have permission?
-  authorized: boolean;
-
-  @ApiProperty({ description: 'error message, if had' })
-  message: string | null;
-}
-export class AuthenticationDto {
-  // raw authorization header
-  authorizationHeader: string;
-}
-export class AuthenticationResponseDto {
-  // our user was valid?
-  authenticated: boolean;
-
-  // error message, if had
-  message: string | null;
 }

@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AuthService } from './auth.service';
-import { AuthorizationRole } from './auth.dto';
+import { AuthorizationRole } from '@contracts/microservice/auth/auth.dto';
 import { AUTHORIZATION_KEY } from './auth.decorator';
 import { Request } from 'express';
 

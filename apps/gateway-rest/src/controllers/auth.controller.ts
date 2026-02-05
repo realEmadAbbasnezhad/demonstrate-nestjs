@@ -1,12 +1,9 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import {
-  AuthorizationRole,
-  SigninDto,
-  SignupDto,
-} from '../providers/auth/auth.dto';
+import { AuthorizationRole } from '@contracts/microservice/auth/auth.dto';
 import { ApiOperation } from '@nestjs/swagger';
 import { AuthService } from '../providers/auth/auth.service';
 import { Authorization } from '../providers/auth/auth.decorator';
+import { SigninDto, SignupDto } from '../providers/auth/auth.dto';
 
 @Controller('auth')
 export class AuthController {

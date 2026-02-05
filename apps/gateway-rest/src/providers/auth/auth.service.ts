@@ -1,17 +1,22 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
+import { AuthResponseDto, SigninDto, SignupDto } from './auth.dto';
 import {
   AuthenticationDto,
   AuthenticationResponseDto,
   AuthorizationDto,
-  AuthorizationRespondDto,
+  AuthorizationResponseDto,
   AuthorizationRole,
-  AuthResponseDto,
-  SigninDto,
-  SignupDto,
-} from './auth.dto';
+} from '@contracts/microservice/auth/auth.dto';
+import { ClientProxy } from '@nestjs/microservices';
+import { AuthCommands } from '@contracts/microservice/auth/auth.commands';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable()
 export class AuthService {
+  constructor(
+    @Inject('AUTH_MICROSERVICE')
+    private readonly authMicroService: ClientProxy,
+  ) {}
   public async signup(data: SignupDto): Promise<AuthResponseDto> {
     return {
       token: data.password,
@@ -34,18 +39,19 @@ export class AuthService {
     };
   }
 
-  public async authentication(
+  public authentication(
     data: AuthenticationDto,
   ): Promise<AuthenticationResponseDto> {
-    return { authenticated: true, message: null };
+    return firstValueFrom(
+      this.authMicroService.send(AuthCommands.AuthenticationCheck, data),
+    );
   }
 
-  public async authorization(
+  public authorization(
     data: AuthorizationDto,
-  ): Promise<AuthorizationRespondDto> {
-    return {
-      authorized: false,
-      message: null,
-    };
+  ): Promise<AuthorizationResponseDto> {
+    return firstValueFrom(
+      this.authMicroService.send(AuthCommands.AuthorizationCheck, data),
+    );
   }
 }

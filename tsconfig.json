@@ -22,12 +22,10 @@
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@common/*": [
-        "libs/common/src/*"
-      ],
-      "@gateway-rest/*": [
-        "src/gateway-rest/*"
-      ]
+      "@common/*": ["libs/common/src/*"],
+      "@contracts/*": ["libs/contracts/src/*"],
+      "@gateway-rest/*": ["apps/src/gateway-rest/*"],
+      "@auth/*": ["apps/src/auth/*"]
     }
   }
 }

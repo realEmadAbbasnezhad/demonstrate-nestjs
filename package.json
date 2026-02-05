@@ -77,7 +77,8 @@
       "<rootDir>/libs/"
     ],
     "moduleNameMapper": {
-      "^@app/common(|/.*)$": "<rootDir>/libs/common/src/$1"
+      "^@app/common(|/.*)$": "<rootDir>/libs/common/src/$1",
+      "^@contracts/contracts(|/.*)$": "<rootDir>/libs/contracts/src/$1"
     }
   }
 }
