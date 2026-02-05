@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import {
   AuthenticationResponseDto,
   AuthenticationDto,
@@ -7,6 +7,11 @@ import {
 @Injectable()
 export class AuthenticationService {
   async check(data: AuthenticationDto): Promise<AuthenticationResponseDto> {
-    return { authenticated: false, message: null };
+    // check if token is present in headers
+    const [tokenType, token] = data.authorizationHeader.split(' ') ?? [];
+    if (tokenType !== 'Bearer') {
+      throw new UnauthorizedException();
+    }
+    return { authenticated: true, message: null };
   }
 }

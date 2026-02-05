@@ -1,10 +1,12 @@
 import { NestFactory, Reflector } from '@nestjs/core';
 import { GatewayRestModule } from './gateway-rest.module';
 import { ConfigService } from '@nestjs/config';
-import { Logger } from '@nestjs/common';
+import { BadRequestException, Logger, ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AuthGuard } from './providers/auth/auth.guard';
 import { AuthService } from './providers/auth/auth.service';
+import { HttpExceptionsFilter } from './providers/exception/exeption.filter';
+import { ExceptionDto } from './providers/exception/exception.dto';
 
 async function bootstrap() {
   const app = await NestFactory.create(GatewayRestModule);
@@ -34,6 +36,18 @@ async function bootstrap() {
     allowedHeaders: 'Content-Type, Accept, Authorization',
     credentials: true,
   });
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      exceptionFactory: (errors) => {
+        throw new BadRequestException({
+          validationErrors: errors,
+          message: '',
+        } as ExceptionDto);
+      },
+    }),
+  );
+  app.useGlobalFilters(new HttpExceptionsFilter());
 
   const port = configService.get<number>('PORT_GATEWAY_REST') as number;
   Logger.log(`RESTful Gateway is running on port ${port}`, 'Bootstrap');

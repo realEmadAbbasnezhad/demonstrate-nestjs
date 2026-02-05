@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import {
   AuthorizationDto,
   AuthorizationResponseDto,
@@ -7,6 +7,7 @@ import {
 @Injectable()
 export class AuthorizationService {
   async check(data: AuthorizationDto): Promise<AuthorizationResponseDto> {
+    Logger.log(data, 'AuthorizationService.check');
     return { authorized: false, message: null };
   }
 }

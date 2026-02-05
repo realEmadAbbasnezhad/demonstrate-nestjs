@@ -5,6 +5,7 @@ import { ClientProxyFactory, Transport } from '@nestjs/microservices';
 import { AuthController } from './controllers/auth.controller';
 import { AuthService } from './providers/auth/auth.service';
 import { AuthGuard } from './providers/auth/auth.guard';
+import { HttpExceptionsFilter } from './providers/exception/exeption.filter';
 
 @Module({
   imports: [ConfigModule],
