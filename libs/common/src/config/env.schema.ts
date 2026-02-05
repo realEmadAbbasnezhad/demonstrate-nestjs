@@ -5,4 +5,5 @@ export const ENV_SCHEMA = Joi.object({
   PORT_AUTH: Joi.number().port().default(3001),
   SWAGGER_ENABLED: Joi.boolean().default(true),
   SWAGGER_PATH: Joi.string().default('swagger'),
+  AUTH_JWT_KEY: Joi.string().default('47a8af5125bf6fa3'),
 } as Joi.SchemaMap);

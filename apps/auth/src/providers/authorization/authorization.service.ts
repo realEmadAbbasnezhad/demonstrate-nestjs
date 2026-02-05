@@ -8,6 +8,6 @@ import {
 export class AuthorizationService {
   async check(data: AuthorizationDto): Promise<AuthorizationResponseDto> {
     Logger.log(data, 'AuthorizationService.check');
-    return { authorized: false, message: null };
+    return { authorized: true, message: null };
   }
 }

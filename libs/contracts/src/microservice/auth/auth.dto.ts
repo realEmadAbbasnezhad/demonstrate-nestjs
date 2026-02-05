@@ -7,7 +7,7 @@ export class AuthorizationDto {
   // raw authorization header
   authorizationHeader: string;
 
-  // authorization header
+  // role being requested
   requestedRole: AuthorizationRole;
 }
 export class AuthorizationResponseDto {
@@ -27,4 +27,10 @@ export class AuthenticationResponseDto {
 
   // error message, if had
   message: string | null;
+}
+
+export class JwtPayloadDto {
+  role: AuthorizationRole;
+  username: string;
+  sub: number;
 }

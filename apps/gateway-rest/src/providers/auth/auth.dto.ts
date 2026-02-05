@@ -1,6 +1,9 @@
 import { IsString, IsNotEmpty, MinLength, Matches } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { AuthorizationRole } from '@contracts/microservice/auth/auth.dto';
+import {
+  AuthorizationRole,
+  JwtPayloadDto,
+} from '@contracts/microservice/auth/auth.dto';
 
 export class SignupDto {
   @ApiProperty({
@@ -24,20 +27,6 @@ export class SignupDto {
   password: string;
 }
 export class SigninDto extends SignupDto {}
-
-export class JwtPayloadDto {
-  @ApiProperty({
-    description: 'user role',
-    example: false,
-  })
-  role: AuthorizationRole;
-
-  @ApiProperty({ description: 'username of user', example: 'user' })
-  username: string;
-
-  @ApiProperty({ description: 'id of user', example: 0 })
-  sub: number;
-}
 
 export class AuthResponseDto {
   @ApiProperty({ description: 'JWT token for user' })

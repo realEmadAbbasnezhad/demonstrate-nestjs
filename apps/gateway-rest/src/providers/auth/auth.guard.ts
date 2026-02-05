@@ -22,16 +22,6 @@ export class AuthGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest<Request>();
     const authorizationHeader = request.headers.authorization ?? '';
-
-    const authenticationRespond = await this.authService.authentication({
-      authorizationHeader: authorizationHeader,
-    });
-    if (!authenticationRespond.authenticated) {
-      throw new UnauthorizedException(
-        authenticationRespond.message ?? 'authentication failed',
-      );
-    }
-
     const requiredRoles = this.reflector.getAllAndOverride<AuthorizationRole[]>(
       AUTHORIZATION_KEY,
       [context.getHandler(), context.getClass()],
@@ -45,16 +35,27 @@ export class AuthGuard implements CanActivate {
       highestRequestedRole = AuthorizationRole.Anonymous;
     }
     if (highestRequestedRole === null) {
-      throw new InternalServerErrorException('authorization failed');
+      throw new InternalServerErrorException('No role declared for route');
     }
 
+    // skip authentication for anonymous routes
+    if (highestRequestedRole !== AuthorizationRole.Anonymous) {
+      const authenticationRespond = await this.authService.authentication({
+        authorizationHeader: authorizationHeader,
+      });
+      if (!authenticationRespond.authenticated) {
+        throw new UnauthorizedException(
+          authenticationRespond.message ?? 'Authentication failed',
+        );
+      }
+    }
     const authorizationRespond = await this.authService.authorization({
       authorizationHeader: authorizationHeader,
       requestedRole: highestRequestedRole,
     });
     if (!authorizationRespond.authorized) {
       throw new ForbiddenException(
-        authorizationRespond.message ?? 'authorization failed',
+        authorizationRespond.message ?? 'Authorization failed',
       );
     }
 
