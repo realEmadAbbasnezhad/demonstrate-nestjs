@@ -25,7 +25,8 @@
       "@common/*": ["libs/common/src/*"],
       "@contracts/*": ["libs/contracts/src/*"],
       "@gateway-rest/*": ["apps/src/gateway-rest/*"],
-      "@auth/*": ["apps/src/auth/*"]
+      "@auth/*": ["apps/src/auth/*"],
+      "@prisma/*": ["prisma/*"]
     }
   }
 }

@@ -1,10 +1,8 @@
 import {
   CanActivate,
   ExecutionContext,
-  ForbiddenException,
   Injectable,
   InternalServerErrorException,
-  UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AuthService } from './auth.service';
@@ -40,24 +38,14 @@ export class AuthGuard implements CanActivate {
 
     // skip authentication for anonymous routes
     if (highestRequestedRole !== AuthorizationRole.Anonymous) {
-      const authenticationRespond = await this.authService.authentication({
+      await this.authService.authentication({
         authorizationHeader: authorizationHeader,
       });
-      if (!authenticationRespond.authenticated) {
-        throw new UnauthorizedException(
-          authenticationRespond.message ?? 'Authentication failed',
-        );
-      }
     }
-    const authorizationRespond = await this.authService.authorization({
+    await this.authService.authorization({
       authorizationHeader: authorizationHeader,
       requestedRole: highestRequestedRole,
     });
-    if (!authorizationRespond.authorized) {
-      throw new ForbiddenException(
-        authorizationRespond.message ?? 'Authorization failed',
-      );
-    }
 
     return true;
   }

@@ -4,7 +4,10 @@ import { AuthCommands } from '@contracts/microservice/auth/auth.commands';
 import { AuthenticationService } from '../providers/authorization/authentication.service';
 import {
   AuthenticationDto,
-  AuthenticationResponseDto,
+  UserCreateDto,
+  UserCreateResponseDto,
+  LoginDto,
+  LoginResponseDto,
 } from '@contracts/microservice/auth/auth.dto';
 
 @Controller()
@@ -12,9 +15,19 @@ export class AuthenticationController {
   constructor(private readonly authenticationService: AuthenticationService) {}
 
   @MessagePattern(AuthCommands.AuthenticationCheck)
-  check(
-    @Payload() payload: AuthenticationDto,
-  ): Promise<AuthenticationResponseDto> {
+  check(@Payload() payload: AuthenticationDto): Promise<null> {
     return this.authenticationService.check(payload);
+  }
+
+  @MessagePattern(AuthCommands.AuthenticationUserCreate)
+  userCreate(
+    @Payload() payload: UserCreateDto,
+  ): Promise<UserCreateResponseDto> {
+    return this.authenticationService.userCreate(payload);
+  }
+
+  @MessagePattern(AuthCommands.AuthenticationLogin)
+  login(@Payload() payload: LoginDto): Promise<LoginResponseDto> {
+    return this.authenticationService.login(payload);
   }
 }

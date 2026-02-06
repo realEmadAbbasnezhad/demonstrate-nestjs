@@ -1,0 +1,29 @@
+generator client {
+  provider     = "prisma-client-js"
+  output       = "../generated/auth"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  ADMIN
+  CUSTOMER
+  ANONYMOUS
+}
+
+model User {
+  id            Int    @id @default(autoincrement())
+  username      String @unique
+  password_hash String
+  role          Role   @default(ANONYMOUS)
+
+  // *** timestamps ***
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@map("users")
+}

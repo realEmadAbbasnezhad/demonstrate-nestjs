@@ -6,6 +6,9 @@ import { AuthenticationController } from './controllers/authentication.controlle
 import { AuthenticationService } from './providers/authorization/authentication.service';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import { HashModule } from '@common/hash/hash.module';
+import { PrismaModule } from '@common/prisma/prisma.module';
+import { ExceptionModule } from '@common/exception/exception.module';
 
 @Module({
   imports: [
@@ -13,6 +16,9 @@ import { ConfigService } from '@nestjs/config';
     JwtModule.register({
       secret: new ConfigService().get<string>('AUTH_JWT_KEY') as string,
     }),
+    HashModule,
+    PrismaModule,
+    ExceptionModule,
   ],
   controllers: [AuthenticationController, AuthorizationController],
   providers: [AuthenticationService, AuthorizationService],

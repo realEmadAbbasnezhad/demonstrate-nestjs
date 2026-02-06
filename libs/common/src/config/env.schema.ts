@@ -6,4 +6,5 @@ export const ENV_SCHEMA = Joi.object({
   SWAGGER_ENABLED: Joi.boolean().default(true),
   SWAGGER_PATH: Joi.string().default('swagger'),
   AUTH_JWT_KEY: Joi.string().default('47a8af5125bf6fa3'),
+  PG_URL: Joi.string().required(),
 } as Joi.SchemaMap);

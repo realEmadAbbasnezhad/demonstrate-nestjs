@@ -1,7 +1,10 @@
+import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty, IsString, Matches, MinLength } from 'class-validator';
+
 export enum AuthorizationRole {
-  Anonymous = 'Anonymous',
-  Customer = 'Customer',
-  Admin = 'Admin',
+  Anonymous = 'ANONYMOUS',
+  Customer = 'CUSTOMER',
+  Admin = 'ADMIN',
 }
 export class AuthorizationDto {
   // raw authorization header
@@ -10,23 +13,9 @@ export class AuthorizationDto {
   // role being requested
   requestedRole: AuthorizationRole;
 }
-export class AuthorizationResponseDto {
-  // does user have permission?
-  authorized: boolean;
-
-  // error message, if had
-  message: string | null;
-}
 export class AuthenticationDto {
   // raw authorization header
   authorizationHeader: string;
-}
-export class AuthenticationResponseDto {
-  // our user was valid?
-  authenticated: boolean;
-
-  // error message, if had
-  message: string | null;
 }
 
 export class JwtPayloadDto {
@@ -34,3 +23,35 @@ export class JwtPayloadDto {
   username: string;
   sub: number;
 }
+
+export class UserCreateDto {
+  @ApiProperty({
+    description: 'username of user, must be unique',
+    example: 'admin',
+  })
+  @IsString()
+  @IsNotEmpty()
+  @Matches(/^[a-zA-Z0-9]+$/, {
+    message: 'Username can only contain letters and numbers',
+  })
+  username: string;
+
+  @ApiProperty({
+    description: 'a strong password for your user',
+    example: 'password',
+  })
+  @IsString()
+  @IsNotEmpty()
+  @MinLength(8)
+  password: string;
+}
+export class UserCreateResponseDto {
+  @ApiProperty({ description: 'JWT token for user' })
+  token: string;
+
+  @ApiProperty({ description: 'user information' })
+  user: JwtPayloadDto;
+}
+
+export class LoginDto extends UserCreateDto {}
+export class LoginResponseDto extends UserCreateResponseDto {}

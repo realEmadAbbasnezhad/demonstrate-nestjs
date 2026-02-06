@@ -7,7 +7,7 @@ import {
   Logger,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { FinalExceptionDto } from './exception.dto';
+import { ResponseExceptionDto } from './exception.dto';
 
 @Catch()
 export class HttpExceptionsFilter implements ExceptionFilter {
@@ -16,15 +16,20 @@ export class HttpExceptionsFilter implements ExceptionFilter {
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
 
-    // check for 5** errors and log them
+    // Extract status code
     const status =
-      exception instanceof HttpException
-        ? exception.getStatus()
+      typeof exception === 'object' &&
+      exception !== null &&
+      'status' in exception
+        ? (exception as { status: number }).status
         : HttpStatus.INTERNAL_SERVER_ERROR;
+
+    // Log the exception if it's a server error (status code 5xx)
     if (status >= 500 && status < 600) {
       Logger.error(exception, 'ExceptionFilter');
     }
 
+    // Safely extract message or validationErrors from the exception response
     const exceptionResponse: unknown =
       exception instanceof HttpException
         ? exception.getResponse()
@@ -35,7 +40,6 @@ export class HttpExceptionsFilter implements ExceptionFilter {
       constraints: { [key: string]: string };
     };
     let validationErrors: ValidationItem[] | undefined;
-
     if (typeof exceptionResponse === 'object' && exceptionResponse !== null) {
       const resp = exceptionResponse as Record<string, unknown>;
 
@@ -89,12 +93,12 @@ export class HttpExceptionsFilter implements ExceptionFilter {
       message = errors;
     }
 
-    const errorResponse: FinalExceptionDto = {
+    // Construct the error response
+    const errorResponse: ResponseExceptionDto = {
       message,
       timestamp: new Date().toISOString(),
       path: request.url,
-    } as FinalExceptionDto;
-
+    };
     response.status(status).json(errorResponse);
   }
 }

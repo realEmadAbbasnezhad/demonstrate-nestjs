@@ -3,6 +3,7 @@ import { AuthModule } from './auth.module';
 import { ConfigService } from '@nestjs/config';
 import { Logger } from '@nestjs/common';
 import { Transport } from '@nestjs/microservices';
+import { MicroserviceExceptionFilter } from '@common/exception/exception.filter';
 
 async function bootstrap() {
   const appContext = await NestFactory.createApplicationContext(AuthModule);
@@ -15,6 +16,8 @@ async function bootstrap() {
     transport: Transport.TCP,
     options: { port: port },
   });
+
+  app.useGlobalFilters(new MicroserviceExceptionFilter());
 
   await app.listen();
 }

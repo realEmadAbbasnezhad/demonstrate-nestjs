@@ -5,7 +5,7 @@ export class ExceptionDto {
   message: string;
 }
 
-export class FinalExceptionDto {
+export class ResponseExceptionDto {
   message: string | { [key: string]: string | { [key: string]: string } };
   timestamp: string;
   path: string;
