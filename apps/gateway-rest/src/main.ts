@@ -1,10 +1,8 @@
-import { NestFactory, Reflector } from '@nestjs/core';
+import { NestFactory } from '@nestjs/core';
 import { GatewayRestModule } from './gateway-rest.module';
 import { ConfigService } from '@nestjs/config';
 import { BadRequestException, Logger, ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { AuthGuard } from './providers/auth/auth.guard';
-import { AuthService } from './providers/auth/auth.service';
 import { HttpExceptionsFilter } from './providers/exception/exeption.filter';
 import { ExceptionDto } from './providers/exception/exception.dto';
 
@@ -29,7 +27,6 @@ async function bootstrap() {
     );
   }
 
-  app.useGlobalGuards(new AuthGuard(new Reflector(), app.get(AuthService)));
   app.enableCors({
     origin: 'localhost',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',

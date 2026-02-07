@@ -4,7 +4,8 @@ import { ConfigService } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { AuthController } from './controllers/auth.controller';
 import { AuthService } from './providers/auth/auth.service';
-import { AuthGuard } from './providers/auth/auth.guard';
+import { UsersController } from './controllers/users.controller';
+import { UsersService } from './providers/users/users.service';
 
 @Module({
   imports: [
@@ -19,7 +20,7 @@ import { AuthGuard } from './providers/auth/auth.guard';
       },
     ]),
   ],
-  controllers: [AuthController],
-  providers: [AuthService, AuthGuard],
+  controllers: [AuthController, UsersController],
+  providers: [AuthService, UsersService],
 })
 export class GatewayRestModule {}

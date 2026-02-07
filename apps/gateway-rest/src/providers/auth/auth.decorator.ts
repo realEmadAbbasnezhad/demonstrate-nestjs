@@ -1,6 +1,10 @@
-import { SetMetadata } from '@nestjs/common';
-import { AuthorizationRole } from '@contracts/microservice/auth/auth.dto';
+import { createParamDecorator, ExecutionContext } from '@nestjs/common';
+import { AuthParamDto } from '@contracts/microservice/auth/auth.dto';
+import { Request } from 'express';
 
-export const AUTHORIZATION_KEY = 'roles';
-export const Authorization = (...roles: AuthorizationRole[]) =>
-  SetMetadata(AUTHORIZATION_KEY, roles);
+export const Auth = createParamDecorator(
+  (data: unknown, context: ExecutionContext): AuthParamDto => {
+    const request = context.switchToHttp().getRequest<Request>();
+    return request.headers.authorization ?? '';
+  },
+);
