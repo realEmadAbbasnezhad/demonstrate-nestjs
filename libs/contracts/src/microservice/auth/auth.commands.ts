@@ -1,7 +1,9 @@
 export const AuthCommands = {
-  AuthorizationCheck: 'authorization.check',
+  AuthProcessAuthParam: 'auth.processAuthParam',
+  AuthLogin: 'auth.login',
 
-  AuthenticationCheck: 'authentication.check',
-  AuthenticationUserCreate: 'authentication.userCreate',
-  AuthenticationLogin: 'authentication.login',
+  UsersCreate: 'users.create',
+  UsersUpdate: 'users.update',
+  UsersDelete: 'users.delete',
+  UsersGet: 'users.get',
 } as const;

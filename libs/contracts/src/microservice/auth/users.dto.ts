@@ -39,9 +39,7 @@ export class CreateUserDto {
   @IsOptional()
   role: $Enums.Role | undefined;
 }
-export class CreateUserResponseDto {
-  newUser: Pick<User, 'password_hash'>;
-}
+export type CreateUserResponseDto = Pick<User, 'password_hash'>;
 export type FindUserResponseDto = Omit<User, 'password_hash'>;
 export type UpdateUserDto = Partial<CreateUserDto>;
 export class FindUserDto {
