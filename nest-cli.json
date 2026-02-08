@@ -19,6 +19,15 @@
         "tsConfigPath": "apps/auth/tsconfig.app.json"
       }
     },
+    "catalog": {
+      "type": "application",
+      "root": "apps/catalog",
+      "entryFile": "main",
+      "sourceRoot": "apps/catalog/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/catalog/tsconfig.app.json"
+      }
+    },
     "common": {
       "type": "library",
       "root": "libs/common",
@@ -53,6 +62,24 @@
       "sourceRoot": "apps/gateway-rest/src",
       "compilerOptions": {
         "tsConfigPath": "apps/gateway-rest/tsconfig.app.json"
+      }
+    },
+    "inventory": {
+      "type": "application",
+      "root": "apps/inventory",
+      "entryFile": "main",
+      "sourceRoot": "apps/inventory/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/inventory/tsconfig.app.json"
+      }
+    },
+    "order": {
+      "type": "application",
+      "root": "apps/order",
+      "entryFile": "main",
+      "sourceRoot": "apps/order/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/order/tsconfig.app.json"
       }
     }
   }
