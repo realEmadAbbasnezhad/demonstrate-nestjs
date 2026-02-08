@@ -1,4 +1,4 @@
-import { $Enums, User } from '@prisma/generated/auth';
+import { $Enums } from '@prisma/generated/auth';
 import {
   IsEnum,
   IsNotEmpty,
@@ -39,10 +39,57 @@ export class CreateUserDto {
   @IsOptional()
   role: $Enums.Role | undefined;
 }
-export type CreateUserResponseDto = Pick<User, 'password_hash'>;
-export type FindUserResponseDto = Omit<User, 'password_hash'>;
-export type UpdateUserDto = Partial<CreateUserDto>;
+export class CreateUserResponseDto {
+  id: number;
+  username: string;
+  role: $Enums.Role;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt: Date | null;
+  token: string;
+}
+export class FindUserResponseDto {
+  id: number;
+  username: string;
+  role: $Enums.Role;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt: Date | null;
+}
+export class UpdateUserDto {
+  @ApiProperty({
+    description: 'username of user',
+    example: 'admin',
+  })
+  @IsString()
+  @IsOptional()
+  @Matches(/^[a-zA-Z0-9]+$/, {
+    message: 'Username can only contain letters and numbers',
+  })
+  username: string | undefined;
+
+  @ApiProperty({
+    description: 'a strong password for your user',
+    example: 'password',
+  })
+  @IsString()
+  @IsOptional()
+  @MinLength(8)
+  password: string | undefined;
+
+  @ApiProperty({
+    enum: $Enums.Role,
+    description: 'role of new user, it wont apply if caller is not admin',
+    example: 'ADMIN',
+  })
+  @IsEnum($Enums.Role)
+  @IsOptional()
+  role: $Enums.Role | undefined;
+}
+
 export class FindUserDto {
   id: number | undefined;
   username: string | undefined;
 }
+
+export type UpdateUserMicroserviceDto = UpdateUserDto & { id: number };

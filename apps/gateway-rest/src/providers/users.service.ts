@@ -6,6 +6,7 @@ import {
   FindUserDto,
   FindUserResponseDto,
   UpdateUserDto,
+  UpdateUserMicroserviceDto,
 } from '@contracts/microservice/auth/users.dto';
 import { firstValueFrom } from 'rxjs';
 import { AuthCommands } from '@contracts/microservice/auth/auth.commands';
@@ -23,29 +24,30 @@ export class UsersService {
     );
   }
 
-  findAll(): Promise<FindUserResponseDto[]> {
+  public findAll(): Promise<FindUserResponseDto[]> {
     return firstValueFrom(
       this.authMicroservice.send(AuthCommands.UsersGet, {} as FindUserDto),
     );
   }
 
-  findOne(id: number): Promise<FindUserResponseDto> {
+  public findOne(id: number): Promise<FindUserResponseDto> {
     return firstValueFrom(
       this.authMicroservice.send(AuthCommands.UsersGet, { id } as FindUserDto),
     );
   }
 
-  update(id: number, body: UpdateUserDto): Promise<FindUserResponseDto> {
+  public update(id: number, body: UpdateUserDto): Promise<FindUserResponseDto> {
     return firstValueFrom(
-      this.authMicroservice.send(AuthCommands.UsersUpdate, body),
+      this.authMicroservice.send(AuthCommands.UsersUpdate, {
+        id,
+        ...body,
+      } as UpdateUserMicroserviceDto),
     );
   }
 
-  remove(id: number): Promise<void> {
+  public remove(id: number): Promise<void> {
     return firstValueFrom(
-      this.authMicroservice.send(AuthCommands.UsersDelete, {
-        id,
-      } as FindUserDto),
+      this.authMicroservice.send(AuthCommands.UsersDelete, id),
     );
   }
 }

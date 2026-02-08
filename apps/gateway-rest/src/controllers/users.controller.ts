@@ -1,9 +1,12 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
   ForbiddenException,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   Patch,
   Post,
@@ -14,13 +17,13 @@ import {
   CreateUserResponseDto,
   FindUserResponseDto,
 } from '@contracts/microservice/auth/users.dto';
-import type { UpdateUserDto } from '@contracts/microservice/auth/users.dto';
-import { UsersService } from '../providers/users/users.service';
+import { UpdateUserDto } from '@contracts/microservice/auth/users.dto';
+import { UsersService } from '../providers/users.service';
 import type { AuthParamDto } from '@contracts/microservice/auth/auth.dto';
 import { Auth } from '../providers/auth/auth.decorator';
 import { AuthService } from '../providers/auth/auth.service';
 import { $Enums } from '@prisma/generated/auth';
-import { ApiOperation } from '@nestjs/swagger';
+import { ApiBody, ApiOperation } from '@nestjs/swagger';
 
 @Controller('users')
 export class UsersController {
@@ -35,10 +38,17 @@ export class UsersController {
     @Body() body: CreateUserDto,
     @Auth() auth: AuthParamDto,
   ): Promise<CreateUserResponseDto> {
-    const processedAuth = await this.authService.processAuthParam(auth);
-    if (!body.role) body.role = $Enums.Role.ANONYMOUS;
-    else if (processedAuth && processedAuth.role != $Enums.Role.ADMIN)
-      body.role = $Enums.Role.ANONYMOUS;
+    if (body.role) {
+      const processedAuth = await this.authService.processAuthParam(auth);
+      if (!processedAuth)
+        throw new UnauthorizedException(
+          'you must be logged in to set user role',
+        );
+      if (processedAuth.role != $Enums.Role.ADMIN)
+        throw new ForbiddenException(
+          'Only admins can set the role of a new user',
+        );
+    }
 
     return this.usersService.create(body);
   }
@@ -73,12 +83,17 @@ export class UsersController {
   }
 
   @ApiOperation({ summary: 'update a user accounts' })
+  @ApiBody({ type: UpdateUserDto })
   @Patch(':id')
   async update(
     @Param('id') id: number,
     @Body() body: UpdateUserDto,
     @Auth() auth: AuthParamDto,
   ): Promise<FindUserResponseDto> {
+    if (!body) throw new BadRequestException('no data provided to update');
+    if (!body.role && !body.username && !body.password)
+      throw new BadRequestException('no valid fields provided to update');
+
     const processedAuth = await this.authService.processAuthParam(auth);
     if (!processedAuth)
       throw new UnauthorizedException('you must be logged in to update users');
@@ -86,12 +101,15 @@ export class UsersController {
       throw new ForbiddenException(
         'only admins can update all users, and users can only update their own account',
       );
+    if (body.role && processedAuth.role != $Enums.Role.ADMIN)
+      throw new ForbiddenException('only admins can update user roles');
 
     return this.usersService.update(id, body);
   }
 
   @ApiOperation({ summary: 'delete a user account' })
   @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
   async remove(
     @Param('id') id: number,
     @Auth() auth: AuthParamDto,

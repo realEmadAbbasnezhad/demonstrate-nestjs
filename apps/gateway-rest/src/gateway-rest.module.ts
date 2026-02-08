@@ -5,7 +5,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import { AuthController } from './controllers/auth.controller';
 import { AuthService } from './providers/auth/auth.service';
 import { UsersController } from './controllers/users.controller';
-import { UsersService } from './providers/users/users.service';
+import { UsersService } from './providers/users.service';
 
 @Module({
   imports: [

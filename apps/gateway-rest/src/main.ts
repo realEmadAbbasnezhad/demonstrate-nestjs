@@ -17,9 +17,13 @@ async function bootstrap() {
     const swaggerPath = configService.get<string>('SWAGGER_PATH') as string;
     const documentBuilder = new DocumentBuilder()
       .setTitle('RESTful Gateway API')
-      .addBearerAuth(undefined, 'jwt')
+      .addBearerAuth(
+        { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' },
+        'bearer',
+      )
       .build();
     const document = SwaggerModule.createDocument(app, documentBuilder);
+    document.security = [{ bearer: [] }];
     SwaggerModule.setup('swagger', app, document);
     Logger.log(
       `Swagger is started and listening on "/${swaggerPath}"!`,

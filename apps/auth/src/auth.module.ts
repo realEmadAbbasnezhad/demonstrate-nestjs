@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
-import { AuthorizationController } from './controllers/authorization.controller';
 import { ConfigModule } from '@common/config/config.module';
-import { AuthorizationService } from './providers/authorization/authorization.service';
-import { AuthenticationController } from './controllers/authentication.controller';
-import { AuthenticationService } from './providers/authorization/authentication.service';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { HashModule } from '@common/hash/hash.module';
 import { PrismaModule } from '@common/prisma/prisma.module';
 import { ExceptionModule } from '@common/exception/exception.module';
+import { AuthController } from './controllers/auth.controller';
+import { UsersController } from './controllers/users.controller';
+import { AuthService } from './providers/auth.service';
+import { UsersService } from './providers/users.service';
 
 @Module({
   imports: [
@@ -20,7 +20,7 @@ import { ExceptionModule } from '@common/exception/exception.module';
     PrismaModule,
     ExceptionModule,
   ],
-  controllers: [AuthenticationController, AuthorizationController],
-  providers: [AuthenticationService, AuthorizationService],
+  controllers: [AuthController, UsersController],
+  providers: [AuthService, UsersService],
 })
 export class AuthModule {}

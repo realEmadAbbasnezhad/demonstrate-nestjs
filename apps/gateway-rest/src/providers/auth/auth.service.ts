@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import {
   AuthParamDto,
-  JwtPayloadDto,
+  AuthParamResponseDto,
   LoginDto,
   LoginResponseDto,
 } from '@contracts/microservice/auth/auth.dto';
@@ -22,9 +22,9 @@ export class AuthService {
     );
   }
 
-  public processAuthParam(auth: AuthParamDto): Promise<JwtPayloadDto | null> {
+  public processAuthParam(auth: AuthParamDto): Promise<AuthParamResponseDto> {
     return firstValueFrom(
-      this.authMicroservice.send(AuthCommands.AuthLogin, auth),
+      this.authMicroservice.send(AuthCommands.AuthProcessAuthParam, auth),
     );
   }
 }
