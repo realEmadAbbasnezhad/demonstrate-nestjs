@@ -13,12 +13,12 @@ import {
   Query,
   UnauthorizedException,
 } from '@nestjs/common';
-import { AuthService } from '../providers/auth/auth.service';
+import { AuthService } from '@gateway-rest/providers/auth/auth.service';
 import { ApiBody, ApiOperation } from '@nestjs/swagger';
-import { Auth } from '../providers/auth/auth.decorator';
+import { Auth } from '@gateway-rest/providers/auth/auth.decorator';
 import type { AuthParamDto } from '@contracts/microservice/auth/auth.dto';
 import { $Enums } from '@prisma/generated/auth';
-import { ProductsService } from '../providers/products.service';
+import { ProductsService } from '@gateway-rest/providers/products.service';
 import {
   CreateProductDto,
   FindProductResponseDto,

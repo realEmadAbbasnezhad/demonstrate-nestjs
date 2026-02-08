@@ -18,10 +18,10 @@ import {
   FindUserResponseDto,
 } from '@contracts/microservice/auth/users.dto';
 import { UpdateUserDto } from '@contracts/microservice/auth/users.dto';
-import { UsersService } from '../providers/users.service';
+import { UsersService } from '@gateway-rest/providers/users.service';
 import type { AuthParamDto } from '@contracts/microservice/auth/auth.dto';
-import { Auth } from '../providers/auth/auth.decorator';
-import { AuthService } from '../providers/auth/auth.service';
+import { Auth } from '@gateway-rest/providers/auth/auth.decorator';
+import { AuthService } from '@gateway-rest/providers/auth/auth.service';
 import { $Enums } from '@prisma/generated/auth';
 import { ApiBody, ApiOperation } from '@nestjs/swagger';
 

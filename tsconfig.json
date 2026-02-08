@@ -22,21 +22,12 @@
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@auth/*": [
-        "apps/src/auth/*"
-      ],
-      "@common/*": [
-        "libs/common/src/*"
-      ],
-      "@contracts/*": [
-        "libs/contracts/src/*"
-      ],
-      "@gateway-rest/*": [
-        "apps/src/gateway-rest/*"
-      ],
-      "@prisma/*": [
-        "prisma/*"
-      ]
+      "@auth/*": ["apps/src/auth/*"],
+      "@common/*": ["libs/common/src/*"],
+      "@contracts/*": ["libs/contracts/src/*"],
+      "@gateway-rest/*": ["apps/gateway-rest/src/*"],
+      "@prisma/*": ["prisma/*"],
+      "@catalog/*": ["apps/catalog/src/*"]
     }
   }
 }

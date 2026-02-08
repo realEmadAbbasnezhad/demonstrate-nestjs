@@ -1,15 +1,17 @@
 import { NestFactory } from '@nestjs/core';
-import { GatewayRestModule } from './gateway-rest.module';
+import { GatewayRestModule } from '@gateway-rest/gateway-rest.module';
 import { ConfigService } from '@nestjs/config';
 import { BadRequestException, Logger, ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { HttpExceptionsFilter } from './providers/exception/exeption.filter';
-import { ExceptionDto } from './providers/exception/exception.dto';
+import { HttpExceptionsFilter } from '@gateway-rest/providers/exception/exeption.filter';
+import { ExceptionDto } from '@gateway-rest/providers/exception/exception.dto';
+import helmet from 'helmet';
 
 async function bootstrap() {
   const app = await NestFactory.create(GatewayRestModule);
   const configService = app.get(ConfigService);
 
+  // Swagger setup
   const swaggerEnabled = configService.get<boolean>(
     'SWAGGER_ENABLED',
   ) as boolean;
@@ -31,13 +33,11 @@ async function bootstrap() {
     );
   }
 
-  app.enableCors({
-    origin: 'localhost',
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    allowedHeaders: 'Content-Type, Accept, Authorization',
-    credentials: true,
-  });
+  // CORS configuration and security headers
+  app.enableCors();
+  app.use(helmet());
 
+  // Global validation pipe
   app.useGlobalPipes(
     new ValidationPipe({
       exceptionFactory: (errors) => {
@@ -54,5 +54,4 @@ async function bootstrap() {
   Logger.log(`RESTful Gateway is running on port ${port}`, 'Bootstrap');
   await app.listen(port);
 }
-
 void bootstrap().then();

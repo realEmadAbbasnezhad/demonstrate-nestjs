@@ -10,6 +10,7 @@ import {
   Matches,
   Min,
 } from 'class-validator';
+import { UpdateUserDto } from '@contracts/microservice/auth/users.dto';
 
 export class CreateProductDto {
   @ApiProperty({ description: 'Product name' })
@@ -187,3 +188,5 @@ export class UpdateProductDto {
   })
   tags?: string[];
 }
+
+export type UpdateProductMicroserviceDto = UpdateProductDto & { id: number };
