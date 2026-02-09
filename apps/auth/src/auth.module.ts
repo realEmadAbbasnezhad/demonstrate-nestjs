@@ -5,10 +5,10 @@ import { ConfigService } from '@nestjs/config';
 import { HashModule } from '@common/hash/hash.module';
 import { PrismaModule } from '@common/prisma/prisma.module';
 import { ExceptionModule } from '@common/exception/exception.module';
-import { AuthController } from './controllers/auth.controller';
-import { UsersController } from './controllers/users.controller';
-import { AuthService } from './providers/auth.service';
-import { UsersService } from './providers/users.service';
+import { AuthController } from '@auth/controllers/auth.controller';
+import { UsersController } from '@auth/controllers/users.controller';
+import { AuthService } from '@auth/providers/auth.service';
+import { UsersService } from '@auth/providers/users.service';
 
 @Module({
   imports: [

@@ -4,7 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import { PrismaClient } from '@prisma/generated/auth';
 
 @Injectable()
-export class PrismaService extends PrismaClient {
+export class PrismaAuthService extends PrismaClient {
   constructor(private readonly configService: ConfigService) {
     const adapter = new PrismaPg({
       connectionString: configService.get<string>('PG_URL'),

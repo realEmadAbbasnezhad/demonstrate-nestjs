@@ -1,8 +1,8 @@
 import { User } from '@prisma/generated/auth';
-import { PrismaService } from '@common/prisma/prisma.service';
+import { PrismaAuthService } from '@common/prisma/prisma-auth.service';
 
 export abstract class UserRepository {
-  protected constructor(private readonly prismaService: PrismaService) {}
+  protected constructor(private readonly prismaService: PrismaAuthService) {}
 
   protected _userCreate(
     user: Omit<User, 'id' | 'createdAt' | 'updatedAt'>,

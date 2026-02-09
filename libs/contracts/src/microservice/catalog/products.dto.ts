@@ -10,7 +10,7 @@ import {
   Matches,
   Min,
 } from 'class-validator';
-import { UpdateUserDto } from '@contracts/microservice/auth/users.dto';
+import { Type } from 'class-transformer';
 
 export class CreateProductDto {
   @ApiProperty({ description: 'Product name' })
@@ -66,8 +66,8 @@ export class CreateProductDto {
 }
 
 export enum SortOrder {
-  asc,
-  desc,
+  asc = 'asc',
+  desc = 'desc',
 }
 export class SearchProductDto {
   @ApiPropertyOptional({ description: 'Full text search query' })
@@ -89,12 +89,14 @@ export class SearchProductDto {
 
   @ApiPropertyOptional({ description: 'Page number (1-based)', default: 1 })
   @IsOptional()
+  @Type(() => Number)
   @IsInt()
   @Min(1)
   page?: number = 1;
 
   @ApiPropertyOptional({ description: 'Items per page', default: 10 })
   @IsOptional()
+  @Type(() => Number)
   @IsInt()
   @Min(1)
   limit?: number = 10;
@@ -102,15 +104,16 @@ export class SearchProductDto {
   @ApiPropertyOptional({ description: 'Field to sort by', example: 'price' })
   @IsOptional()
   @IsString()
-  sortField: string;
+  sortField?: string;
 
-  @ApiProperty({
+  @ApiPropertyOptional({
     description: 'Sort order',
     enum: SortOrder,
     example: 'asc',
   })
+  @IsOptional()
   @IsEnum(SortOrder)
-  sortOrder: SortOrder;
+  sortOrder?: SortOrder;
 }
 export class SearchProductResponseDto {
   id: string;

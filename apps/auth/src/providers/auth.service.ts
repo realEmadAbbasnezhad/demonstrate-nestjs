@@ -13,14 +13,14 @@ import {
 } from '@contracts/microservice/auth/auth.dto';
 import { UserRepository } from '../repository/user.repository';
 import { HashService } from '@common/hash/hash.service';
-import { PrismaService } from '@common/prisma/prisma.service';
+import { PrismaAuthService } from '@common/prisma/prisma-auth.service';
 
 @Injectable()
 export class AuthService extends UserRepository {
   constructor(
     private readonly jwtService: JwtService,
     private readonly hashService: HashService,
-    private readonly _prismaService: PrismaService,
+    private readonly _prismaService: PrismaAuthService,
   ) {
     super(_prismaService);
   }

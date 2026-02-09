@@ -1,11 +1,14 @@
 generator client {
-  provider     = "prisma-client-js"
-  output       = "../generated/catalog"
-  moduleFormat = "cjs"
+  provider      = "prisma-client-js"
+  output        = "../generated/catalog"
+  moduleFormat  = "cjs"
+  engineType    = "binary"
+  binaryTargets = ["native"]
 }
 
 datasource db {
   provider = "mongodb"
+  url      = env("MONGO_URL")
 }
 
 model Product {
