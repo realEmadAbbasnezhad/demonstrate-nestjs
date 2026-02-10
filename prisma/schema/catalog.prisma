@@ -1,9 +1,7 @@
 generator client {
-  provider      = "prisma-client-js"
-  output        = "../generated/catalog"
-  moduleFormat  = "cjs"
-  engineType    = "binary"
-  binaryTargets = ["native"]
+  provider     = "prisma-client-js"
+  output       = "../generated/catalog"
+  moduleFormat = "cjs"
 }
 
 datasource db {

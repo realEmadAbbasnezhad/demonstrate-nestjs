@@ -6,3 +6,6 @@ export * from './microservice/catalog/catalog.commands';
 export * from './microservice/catalog/products.dto';
 
 export * from './microservice/microservice.dto';
+
+export * from './prisma/prisma-auth.repository';
+export * from './prisma/prisma-catalog.repository';

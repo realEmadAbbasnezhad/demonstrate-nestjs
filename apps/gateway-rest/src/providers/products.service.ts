@@ -30,14 +30,14 @@ export class ProductsService {
     );
   }
 
-  public findOne(id: number): Promise<FindProductResponseDto> {
+  public findOne(id: string): Promise<FindProductResponseDto> {
     return firstValueFrom(
       this.catalogMicroservice.send(CatalogCommands.ProductsGet, id),
     );
   }
 
   public update(
-    id: number,
+    id: string,
     body: UpdateProductDto,
   ): Promise<FindProductResponseDto> {
     return firstValueFrom(
@@ -48,7 +48,7 @@ export class ProductsService {
     );
   }
 
-  public remove(id: number): Promise<void> {
+  public remove(id: string): Promise<void> {
     return firstValueFrom(
       this.catalogMicroservice.send(CatalogCommands.ProductsDelete, id),
     );

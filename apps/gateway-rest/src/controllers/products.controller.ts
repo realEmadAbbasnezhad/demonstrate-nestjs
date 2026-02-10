@@ -61,7 +61,7 @@ export class ProductsController {
 
   @ApiOperation({ summary: 'get a product' })
   @Get(':id')
-  async findOne(@Param('id') id: number): Promise<FindProductResponseDto> {
+  async findOne(@Param('id') id: string): Promise<FindProductResponseDto> {
     return this.productsService.findOne(id);
   }
 
@@ -69,7 +69,7 @@ export class ProductsController {
   @ApiBody({ type: UpdateProductDto })
   @Patch(':id')
   async update(
-    @Param('id') id: number,
+    @Param('id') id: string,
     @Body() body: UpdateProductDto,
     @Auth() auth: AuthParamDto,
   ): Promise<FindProductResponseDto> {
@@ -100,7 +100,7 @@ export class ProductsController {
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   async remove(
-    @Param('id') id: number,
+    @Param('id') id: string,
     @Auth() auth: AuthParamDto,
   ): Promise<void> {
     const processedAuth = await this.authService.processAuthParam(auth);

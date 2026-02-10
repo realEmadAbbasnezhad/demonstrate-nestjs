@@ -1,31 +1,29 @@
 import { User } from '@prisma/generated/auth';
-import { PrismaAuthService } from '@common/prisma/prisma-auth.service';
+import { AuthRepository } from '@contracts/prisma/prisma-auth.repository';
 
-export abstract class UserRepository {
-  protected constructor(private readonly prismaService: PrismaAuthService) {}
-
+export abstract class UserRepository extends AuthRepository {
   protected _userCreate(
     user: Omit<User, 'id' | 'createdAt' | 'updatedAt'>,
   ): Promise<User> {
-    return this.prismaService.user.create({
+    return this.prisma.user.create({
       data: { ...user, deletedAt: null },
     });
   }
 
   protected _getUserByUsername(username: string): Promise<User | null> {
-    return this.prismaService.user.findFirst({
+    return this.prisma.user.findFirst({
       where: { username, AND: { deletedAt: null } },
     });
   }
 
   protected _getUserById(id: number): Promise<User | null> {
-    return this.prismaService.user.findUnique({
+    return this.prisma.user.findUnique({
       where: { id, AND: { deletedAt: null } },
     });
   }
 
   protected _getAllUser(): Promise<User[]> {
-    return this.prismaService.user.findMany({
+    return this.prisma.user.findMany({
       where: { deletedAt: null },
     });
   }
@@ -34,14 +32,14 @@ export abstract class UserRepository {
     id: number,
     user: Partial<Omit<User, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'>>,
   ): Promise<User> {
-    return this.prismaService.user.update({
+    return this.prisma.user.update({
       where: { id, AND: { deletedAt: null } },
       data: { ...user },
     });
   }
 
   protected _deleteUser(id: number): Promise<User> {
-    return this.prismaService.user.update({
+    return this.prisma.user.update({
       where: { id },
       data: { deletedAt: new Date() },
     });

@@ -1,8 +1,9 @@
 import {
+  BadRequestException,
   Injectable,
+  InternalServerErrorException,
+  NotFoundException,
 } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import { HashService } from '@common/hash/hash.service';
 import {
   CreateProductDto,
   FindProductResponseDto,
@@ -11,24 +12,39 @@ import {
   UpdateProductDto,
 } from '@contracts/microservice/catalog/products.dto';
 import { ProductsRepository } from '@catalog/repository/products.repository';
-import { PrismaCatalogService } from '@common/prisma/prisma-catalog.service';
+import { Prisma, Product } from '@prisma/generated/catalog';
 
 @Injectable()
 export class ProductsService extends ProductsRepository {
-  constructor(
-    private readonly jwtService: JwtService,
-    private readonly hashService: HashService,
-    private readonly _prismaService: PrismaCatalogService,
-  ) {
-    super(_prismaService);
+  constructor() {
+    super();
   }
 
   public async create(body: CreateProductDto): Promise<FindProductResponseDto> {
-    return Promise.resolve({});
+    return this._createProduct({
+      ...body,
+      deletedAt: null,
+    });
   }
 
   public async find(id: string): Promise<FindProductResponseDto> {
-    return Promise.resolve({});
+    let result: Product | null = null;
+    try {
+      result = await this._getProduct(id);
+    } catch (e) {
+      if (e instanceof Prisma.PrismaClientKnownRequestError) {
+        if (e.code === 'P2023') {
+          throw new BadRequestException(`Invalid product id`);
+        }
+        throw new InternalServerErrorException(e.meta?.message || e);
+      }
+
+      throw new InternalServerErrorException(e);
+    }
+    if (!result) {
+      throw new NotFoundException(`Product not found`);
+    }
+    return result;
   }
 
   public async search(

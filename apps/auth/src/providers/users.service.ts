@@ -7,7 +7,6 @@ import {
 import { UserRepository } from '../repository/user.repository';
 import { JwtService } from '@nestjs/jwt';
 import { HashService } from '@common/hash/hash.service';
-import { PrismaAuthService } from '@common/prisma/prisma-auth.service';
 import { JwtPayloadDto } from '@contracts/microservice/auth/auth.dto';
 import {
   CreateUserDto,
@@ -23,9 +22,8 @@ export class UsersService extends UserRepository {
   constructor(
     private readonly jwtService: JwtService,
     private readonly hashService: HashService,
-    private readonly _prismaService: PrismaAuthService,
   ) {
-    super(_prismaService);
+    super();
   }
 
   public async create(body: CreateUserDto): Promise<CreateUserResponseDto> {

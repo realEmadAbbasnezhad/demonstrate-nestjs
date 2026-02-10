@@ -1,19 +1,17 @@
 import { Product } from '@prisma/generated/catalog';
-import { PrismaCatalogService } from '@common/prisma/prisma-catalog.service';
+import { CatalogRepository } from '@contracts/prisma/prisma-catalog.repository';
 
-export abstract class ProductsRepository {
-  protected constructor(private readonly prismaService: PrismaCatalogService) {}
-
+export abstract class ProductsRepository extends CatalogRepository {
   protected _createProduct(
     product: Omit<Product, 'id' | 'createdAt' | 'updatedAt'>,
   ): Promise<Product> {
-    return this.prismaService.product.create({
+    return this.prisma.product.create({
       data: { ...product, deletedAt: null },
     });
   }
 
   protected _getProduct(id: string): Promise<Product | null> {
-    return this.prismaService.product.findFirst({
+    return this.prisma.product.findFirst({
       where: { id, AND: { deletedAt: null } },
     });
   }
@@ -24,14 +22,14 @@ export abstract class ProductsRepository {
       Omit<Product, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'>
     >,
   ): Promise<Product> {
-    return this.prismaService.product.update({
+    return this.prisma.product.update({
       where: { id, AND: { deletedAt: null } },
       data: { ...user },
     });
   }
 
   protected _deleteProduct(id: string): Promise<Product> {
-    return this.prismaService.product.update({
+    return this.prisma.product.update({
       where: { id },
       data: { deletedAt: new Date() },
     });

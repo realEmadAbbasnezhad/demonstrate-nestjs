@@ -192,4 +192,4 @@ export class UpdateProductDto {
   tags?: string[];
 }
 
-export type UpdateProductMicroserviceDto = UpdateProductDto & { id: number };
+export type UpdateProductMicroserviceDto = UpdateProductDto & { id: string };
