@@ -13,7 +13,7 @@ import {
 import { Type } from 'class-transformer';
 
 export class CreateProductDto {
-  @ApiProperty({ description: 'Product name' })
+  @ApiProperty({ description: 'Product name', example: 'test product' })
   @IsNotEmpty()
   @IsString()
   @Matches(/^[a-zA-Z0-9\s]+$/, {
@@ -21,7 +21,7 @@ export class CreateProductDto {
   })
   name: string;
 
-  @ApiProperty({ description: 'URL friendly slug' })
+  @ApiProperty({ description: 'URL friendly slug', example: 'test-product' })
   @IsNotEmpty()
   @IsString()
   @Matches(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, {
@@ -29,31 +29,39 @@ export class CreateProductDto {
   })
   slug: string;
 
-  @ApiProperty({ description: 'Product description' })
+  @ApiProperty({
+    description: 'Product description',
+    example: 'This is a test product',
+  })
   @IsNotEmpty()
   @IsString()
   description: string;
 
   @ApiProperty({
     description: 'Price in smallest currency unit or as a number',
+    example: 100000,
   })
   @IsInt()
   @IsNotEmpty()
   @Min(0)
   price: number;
 
-  @ApiProperty({ description: 'Available stock count' })
+  @ApiProperty({ description: 'Available stock count', example: 10 })
   @IsInt()
   @IsNotEmpty()
   @Min(0)
   stockCount: number;
 
-  @ApiProperty({ description: 'Category identifier or name' })
+  @ApiProperty({ description: 'Category identifier or name', example: 'dev' })
   @IsString()
   @IsNotEmpty()
   category: string;
 
-  @ApiProperty({ type: [String], description: 'Tags for the product' })
+  @ApiProperty({
+    type: [String],
+    description: 'Tags for the product',
+    example: ['dev', 'test'],
+  })
   @IsArray()
   @ArrayNotEmpty()
   @IsString({ each: true })
@@ -139,7 +147,7 @@ export class FindProductResponseDto {
 }
 
 export class UpdateProductDto {
-  @ApiPropertyOptional({ description: 'Product name' })
+  @ApiPropertyOptional({ description: 'Product name', example: 'test product' })
   @IsOptional()
   @IsString()
   @Matches(/^[a-zA-Z0-9\s]+$/, {
@@ -147,7 +155,10 @@ export class UpdateProductDto {
   })
   name?: string;
 
-  @ApiPropertyOptional({ description: 'URL friendly slug' })
+  @ApiPropertyOptional({
+    description: 'URL friendly slug',
+    example: 'test-product',
+  })
   @IsOptional()
   @IsString()
   @Matches(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, {
@@ -155,31 +166,42 @@ export class UpdateProductDto {
   })
   slug?: string;
 
-  @ApiPropertyOptional({ description: 'Product description' })
+  @ApiPropertyOptional({
+    description: 'Product description',
+    example: 'This is a test product',
+  })
   @IsOptional()
   @IsString()
   description?: string;
 
   @ApiPropertyOptional({
     description: 'Price in smallest currency unit or as a number',
+    example: 100000,
   })
   @IsOptional()
   @IsInt()
   @Min(0)
   price?: number;
 
-  @ApiPropertyOptional({ description: 'Available stock count' })
+  @ApiPropertyOptional({ description: 'Available stock count', example: 10 })
   @IsOptional()
   @IsInt()
   @Min(0)
   stockCount?: number;
 
-  @ApiPropertyOptional({ description: 'Category identifier or name' })
+  @ApiPropertyOptional({
+    description: 'Category identifier or name',
+    example: 'dev',
+  })
   @IsOptional()
   @IsString()
   category?: string;
 
-  @ApiPropertyOptional({ type: [String], description: 'Tags for the product' })
+  @ApiPropertyOptional({
+    type: [String],
+    description: 'Tags for the product',
+    example: ['dev', 'test'],
+  })
   @IsOptional()
   @IsArray()
   @ArrayNotEmpty()

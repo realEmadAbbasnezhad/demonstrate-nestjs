@@ -9,6 +9,7 @@ import {
 } from '@contracts/microservice/catalog/products.dto';
 import { CatalogCommands } from '@contracts/microservice/catalog/catalog.commands';
 import { ProductsService } from '@catalog/providers/products.service';
+import { runtimeOmit } from '@common/pick-omit';
 
 @Controller()
 export class ProductsController {
@@ -36,11 +37,12 @@ export class ProductsController {
   update(
     @Payload() payload: UpdateProductMicroserviceDto,
   ): Promise<FindProductResponseDto> {
-    return this.productsService.update(Number(payload.id), payload);
+    const finalPayload = runtimeOmit(payload, ['id']);
+    return this.productsService.update(payload.id, finalPayload);
   }
 
   @MessagePattern(CatalogCommands.ProductsDelete)
-  remove(id: number): Promise<null> {
-    return this.productsService.remove(Number(id));
+  remove(id: string): Promise<null> {
+    return this.productsService.remove(id);
   }
 }
