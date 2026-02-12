@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   ConflictException,
+  HttpException,
   Inject,
   Injectable,
   InternalServerErrorException,
@@ -17,10 +18,16 @@ import { ProductsRepository } from '@catalog/repository/products.repository';
 import { Prisma, Product } from '@prisma/generated/catalog';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import type { Cache } from 'cache-manager';
+import { ElasticsearchService } from '@nestjs/elasticsearch';
+import { errors } from '@elastic/elasticsearch';
+import { SearchTotalHits } from '@elastic/elasticsearch/api/types';
 
 @Injectable()
 export class ProductsService extends ProductsRepository {
-  constructor(@Inject(CACHE_MANAGER) private readonly cacheManager: Cache) {
+  constructor(
+    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
+    private readonly esService: ElasticsearchService,
+  ) {
     super();
   }
 
@@ -48,6 +55,12 @@ export class ProductsService extends ProductsRepository {
     if (!result) {
       throw new InternalServerErrorException(`Failed to create product`);
     }
+
+    await this.esService.index({
+      index: 'products',
+      id: result.id,
+      document: result,
+    });
     return result;
   }
 
@@ -85,7 +98,62 @@ export class ProductsService extends ProductsRepository {
   public async search(
     body: SearchProductDto,
   ): Promise<SearchProductResponseDto[]> {
-    return Promise.resolve({});
+    const searchQuery: any = {
+      index: 'products',
+      body: {
+        query: {
+          bool: {
+            must: body.q
+              ? [
+                  {
+                    multi_match: {
+                      query: body.q,
+                      fields: ['name', 'category', 'tags'],
+                    },
+                  },
+                ]
+              : [],
+            filter: [
+              ...(body.category ? [{ term: { category: body.category } }] : []),
+              ...(body.tags && body.tags.length > 0
+                ? [{ terms: { tags: body.tags } }]
+                : []),
+            ],
+          },
+        },
+        from: ((body.page ?? 1) - 1) * (body.limit ?? 10),
+        size: body.limit,
+        sort: body.sortField
+          ? [
+              {
+                [body.sortField]: {
+                  order: body.sortOrder || 'asc',
+                },
+              },
+            ]
+          : undefined,
+      },
+    };
+
+    try {
+      const result =
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+        await this.esService.search<SearchProductResponseDto>(searchQuery);
+      if ((result.hits.total as SearchTotalHits).value == 0)
+        throw new NotFoundException(
+          `No products found matching the search criteria`,
+        );
+      return result.hits.hits.map((hit) => hit._source!) ?? [];
+    } catch (e) {
+      if (e instanceof errors.ResponseError) {
+        throw new InternalServerErrorException(e.message);
+      }
+      if (e instanceof HttpException) {
+        throw e;
+      }
+
+      throw new InternalServerErrorException(e);
+    }
   }
 
   public async update(
@@ -109,6 +177,11 @@ export class ProductsService extends ProductsRepository {
       throw new NotFoundException(`Product not found`);
     }
 
+    await this.esService.update({
+      index: 'products',
+      id: id,
+      doc: body,
+    });
     await this.cacheManager.del(`product.${id}`);
     return result;
   }
@@ -138,6 +211,10 @@ export class ProductsService extends ProductsRepository {
       throw new InternalServerErrorException(e);
     }
 
+    await this.esService.delete({
+      index: 'products',
+      id: id,
+    });
     await this.cacheManager.del(`product.${id}`);
     return null;
   }

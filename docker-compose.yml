@@ -19,11 +19,11 @@ services:
     image: elasticsearch:9.3.0
     environment:
       - discovery.type=single-node
-      - ELASTIC_PASSWORD=password
-      - ELASTIC_USERNAME=user
+      - xpack.security.http.ssl.enabled=false
+      - xpack.security.enabled=false
     ports:
       - "9200:9200"
-      - "9300:9300"
+    mem_limit: 2GB
 
   redis:
     image: redis:alpine

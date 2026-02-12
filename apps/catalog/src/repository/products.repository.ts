@@ -1,5 +1,6 @@
 import { Product } from '@prisma/generated/catalog';
 import { CatalogRepository } from '@contracts/prisma/prisma-catalog.repository';
+import { SearchProductDto, SearchProductResponseDto } from '@contracts/microservice/catalog/products.dto';
 
 export abstract class ProductsRepository extends CatalogRepository {
   protected _createProduct(
