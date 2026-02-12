@@ -27,7 +27,8 @@
       "@contracts/*": ["libs/contracts/src/*"],
       "@gateway-rest/*": ["apps/gateway-rest/src/*"],
       "@prisma/*": ["prisma/*"],
-      "@catalog/*": ["apps/catalog/src/*"]
+      "@catalog/*": ["apps/catalog/src/*"],
+      "@order/*": ["apps/order/src/*"],
     }
   }
 }

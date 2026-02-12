@@ -11,4 +11,5 @@ export const ENV_SCHEMA = Joi.object({
   MONGO_URL: Joi.string().required(),
   REDIS_URL: Joi.string().default('redis://user:password@localhost:6379/0'),
   ES_URL: Joi.string().default('http://localhost:9200'),
+  PORT_ORDER: Joi.number().port().default(3003),
 } as Joi.SchemaMap);

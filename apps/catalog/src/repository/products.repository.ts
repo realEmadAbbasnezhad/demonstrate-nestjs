@@ -1,6 +1,5 @@
 import { Product } from '@prisma/generated/catalog';
 import { CatalogRepository } from '@contracts/prisma/prisma-catalog.repository';
-import { SearchProductDto, SearchProductResponseDto } from '@contracts/microservice/catalog/products.dto';
 
 export abstract class ProductsRepository extends CatalogRepository {
   protected _createProduct(
@@ -11,9 +10,15 @@ export abstract class ProductsRepository extends CatalogRepository {
     });
   }
 
-  protected _getProduct(id: string): Promise<Product | null> {
+  protected _getProductById(id: string): Promise<Product | null> {
     return this.prisma.product.findFirst({
       where: { id, AND: { deletedAt: null } },
+    });
+  }
+
+  protected _getProductBySlug(slug: string): Promise<Product | null> {
+    return this.prisma.product.findFirst({
+      where: { slug, AND: { deletedAt: null } },
     });
   }
 

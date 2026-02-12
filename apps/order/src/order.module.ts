@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { OrderController } from './order.controller';
-import { OrderService } from './order.service';
+import { ConfigModule } from '@common/config/config.module';
+import { ExceptionModule } from '@common/exception/exception.module';
 
 @Module({
-  imports: [],
-  controllers: [OrderController],
-  providers: [OrderService],
+  imports: [ConfigModule, ExceptionModule],
+  controllers: [],
+  providers: [],
 })
 export class OrderModule {}

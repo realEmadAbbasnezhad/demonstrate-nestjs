@@ -11,6 +11,7 @@
     "start-gateway-rest:dev": "nest start gateway-rest --debug --watch",
     "start-auth:dev": "nest start auth --debug --watch",
     "start-catalog:dev": "nest start catalog --debug --watch",
+    "start-order:dev": "nest start order --debug --watch",
     "start:prod": "node dist/apps/demonstrate-nestjs/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",

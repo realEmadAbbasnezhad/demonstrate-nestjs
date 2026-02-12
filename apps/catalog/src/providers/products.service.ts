@@ -72,11 +72,26 @@ export class ProductsService extends ProductsRepository {
 
     let result: Product | null = null;
     try {
-      result = await this._getProduct(id);
+      result = await this._getProductById(id);
     } catch (e) {
       if (e instanceof Prisma.PrismaClientKnownRequestError) {
         if (e.code === 'P2023') {
-          throw new BadRequestException(`Invalid product id`);
+          try {
+            result = await this._getProductBySlug(id);
+          } catch (e) {
+            if (e instanceof Prisma.PrismaClientKnownRequestError) {
+              throw new BadRequestException(`Invalid product id`);
+            }
+
+            throw new InternalServerErrorException(e);
+          }
+
+          if (!result) {
+            throw new NotFoundException(`Product not found`);
+          }
+
+          await this.cacheManager.set(`product.${id}`, result);
+          return result;
         }
         if (e.code == 'P2025') {
           throw new NotFoundException(`Product not found`);
@@ -188,7 +203,7 @@ export class ProductsService extends ProductsRepository {
 
   public async remove(id: string): Promise<null> {
     try {
-      const resalt = await this._getProduct(id);
+      const resalt = await this._getProductById(id);
       if (resalt == null || resalt.deletedAt != null) {
         throw new Prisma.PrismaClientKnownRequestError('', {
           code: 'P2025',
