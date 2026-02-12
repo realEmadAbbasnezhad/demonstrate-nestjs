@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   ConflictException,
+  Inject,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
@@ -14,10 +15,12 @@ import {
 } from '@contracts/microservice/catalog/products.dto';
 import { ProductsRepository } from '@catalog/repository/products.repository';
 import { Prisma, Product } from '@prisma/generated/catalog';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import type { Cache } from 'cache-manager';
 
 @Injectable()
 export class ProductsService extends ProductsRepository {
-  constructor() {
+  constructor(@Inject(CACHE_MANAGER) private readonly cacheManager: Cache) {
     super();
   }
 
@@ -49,6 +52,11 @@ export class ProductsService extends ProductsRepository {
   }
 
   public async find(id: string): Promise<FindProductResponseDto> {
+    const cache = await this.cacheManager.get<FindProductResponseDto>(
+      `product.${id}`,
+    );
+    if (cache) return cache;
+
     let result: Product | null = null;
     try {
       result = await this._getProduct(id);
@@ -69,6 +77,8 @@ export class ProductsService extends ProductsRepository {
     if (!result) {
       throw new NotFoundException(`Product not found`);
     }
+
+    await this.cacheManager.set(`product.${id}`, result);
     return result;
   }
 
@@ -98,6 +108,8 @@ export class ProductsService extends ProductsRepository {
     if (!result) {
       throw new NotFoundException(`Product not found`);
     }
+
+    await this.cacheManager.del(`product.${id}`);
     return result;
   }
 
@@ -110,9 +122,7 @@ export class ProductsService extends ProductsRepository {
           clientVersion: '',
         });
       }
-
       await this._deleteProduct(id);
-      return null;
     } catch (e) {
       if (e instanceof Prisma.PrismaClientKnownRequestError) {
         if (e.code === 'P2023') {
@@ -127,5 +137,8 @@ export class ProductsService extends ProductsRepository {
 
       throw new InternalServerErrorException(e);
     }
+
+    await this.cacheManager.del(`product.${id}`);
+    return null;
   }
 }
