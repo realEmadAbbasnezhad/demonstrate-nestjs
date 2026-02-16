@@ -10,19 +10,19 @@ export abstract class UserRepository extends AuthRepository {
     });
   }
 
-  protected _getUserByUsername(username: string): Promise<User | null> {
+  protected _readUserByUsername(username: string): Promise<User | null> {
     return this.prisma.user.findFirst({
       where: { username, AND: { deletedAt: null } },
     });
   }
 
-  protected _getUserById(id: number): Promise<User | null> {
+  protected _readUserById(id: number): Promise<User | null> {
     return this.prisma.user.findUnique({
       where: { id, AND: { deletedAt: null } },
     });
   }
 
-  protected _getAllUser(): Promise<User[]> {
+  protected _readAllUser(): Promise<User[]> {
     return this.prisma.user.findMany({
       where: { deletedAt: null },
     });

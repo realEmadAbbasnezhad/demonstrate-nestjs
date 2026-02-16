@@ -4,18 +4,19 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
-import { UserRepository } from '../repository/user.repository';
+import { UserRepository } from '@auth/repository/user.repository';
 import { JwtService } from '@nestjs/jwt';
 import { HashService } from '@common/hash/hash.service';
 import { JwtPayloadDto } from '@contracts/microservice/auth/auth.dto';
 import {
   CreateUserDto,
   CreateUserResponseDto,
-  FindUserDto,
-  FindUserResponseDto,
+  ReadUserDto,
+  ReadUserResponseDto,
   UpdateUserDto,
 } from '@contracts/microservice/auth/users.dto';
 import { $Enums, Prisma, User } from '@prisma/generated/auth';
+import { runtimeOmit, runtimePick } from '@common/pick-omit';
 
 @Injectable()
 export class UsersService extends UserRepository {
@@ -48,62 +49,44 @@ export class UsersService extends UserRepository {
 
     // create jwt
     return {
-      token: await this.jwtService.signAsync(newUser as JwtPayloadDto),
-      username: newUser.username,
-      role: newUser.role,
-      id: newUser.id,
-      createdAt: newUser.createdAt,
-      deletedAt: newUser.deletedAt,
-      updatedAt: newUser.updatedAt,
-    };
+      token: await this.jwtService.signAsync(
+        runtimePick(newUser, ['id', 'username', 'role']) as JwtPayloadDto,
+      ),
+      ...runtimeOmit(newUser, ['password_hash']),
+    } as CreateUserResponseDto;
   }
 
-  async find(body: FindUserDto): Promise<FindUserResponseDto[]> {
+  async read(body: ReadUserDto): Promise<ReadUserResponseDto[]> {
     if (body.id) {
-      const user = await this._getUserById(body.id);
+      const user = await this._readUserById(body.id);
       if (!user) throw new NotFoundException('Id not founded');
 
       return [
-        {
-          username: user.username,
-          role: user.role,
-          id: user.id,
-          createdAt: user.createdAt,
-          deletedAt: user.deletedAt,
-          updatedAt: user.updatedAt,
-        },
+        // @ts-expect-error compiler bitching
+        { ...runtimeOmit(user, ['password_hash']) } as ReadUserResponseDto,
       ];
     }
 
     if (body.username) {
-      const user = await this._getUserByUsername(body.username);
+      const user = await this._readUserByUsername(body.username);
       if (!user) throw new NotFoundException('Username not founded');
 
       return [
-        {
-          username: user.username,
-          role: user.role,
-          id: user.id,
-          createdAt: user.createdAt,
-          deletedAt: user.deletedAt,
-          updatedAt: user.updatedAt,
-        },
+        // @ts-expect-error compiler bitching
+        { ...runtimeOmit(user, ['password_hash']) } as ReadUserResponseDto,
       ];
     }
 
-    const allUsers = await this._getAllUser();
-    return allUsers.map((user) => ({
-      username: user.username,
-      role: user.role,
-      id: user.id,
-      createdAt: user.createdAt,
-      deletedAt: user.deletedAt,
-      updatedAt: user.updatedAt,
-    }));
+    const allUsers = await this._readAllUser();
+    return allUsers.map(
+      (user) =>
+        // @ts-expect-error compiler bitching
+        ({ ...runtimeOmit(user, ['password_hash']) }) as ReadUserResponseDto,
+    );
   }
 
-  async update(id: number, body: UpdateUserDto): Promise<FindUserResponseDto> {
-    const user = await this._getUserById(id);
+  async update(id: number, body: UpdateUserDto): Promise<ReadUserResponseDto> {
+    const user = await this._readUserById(id);
     if (!user) throw new NotFoundException('Id not founded');
 
     if (body.password) {
@@ -116,18 +99,14 @@ export class UsersService extends UserRepository {
       user.username = body.username;
     }
     const updatedUser = await this._updateUser(id, user);
+    // @ts-expect-error compiler bitching
     return {
-      username: updatedUser.username,
-      role: updatedUser.role,
-      id: updatedUser.id,
-      createdAt: updatedUser.createdAt,
-      deletedAt: updatedUser.deletedAt,
-      updatedAt: updatedUser.updatedAt,
-    };
+      ...runtimeOmit(updatedUser, ['password_hash']),
+    } as ReadUserResponseDto;
   }
 
-  async remove(id: number): Promise<null> {
-    const user = await this._getUserById(id);
+  async delete(id: number): Promise<null> {
+    const user = await this._readUserById(id);
     if (!user) throw new NotFoundException('Id not founded');
 
     await this._deleteUser(id);

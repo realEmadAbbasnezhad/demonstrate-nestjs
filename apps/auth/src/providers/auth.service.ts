@@ -11,8 +11,9 @@ import {
   LoginDto,
   LoginResponseDto,
 } from '@contracts/microservice/auth/auth.dto';
-import { UserRepository } from '../repository/user.repository';
+import { UserRepository } from '@auth/repository/user.repository';
 import { HashService } from '@common/hash/hash.service';
+import { runtimeOmit, runtimePick } from '@common/pick-omit';
 
 @Injectable()
 export class AuthService extends UserRepository {
@@ -23,7 +24,9 @@ export class AuthService extends UserRepository {
     super();
   }
 
-  async processAuthParam(data: AuthParamDto): Promise<AuthParamResponseDto> {
+  public async processAuthParam(
+    data: AuthParamDto,
+  ): Promise<AuthParamResponseDto> {
     // check if token is present in headers
     const [tokenType, token] = data.split(' ') ?? [];
     if (tokenType !== 'Bearer') {
@@ -41,21 +44,18 @@ export class AuthService extends UserRepository {
   }
 
   public async login(data: LoginDto): Promise<LoginResponseDto> {
-    const user = await this._getUserByUsername(data.username);
-    if (!user) throw new NotFoundException('Username not founded');
+    const user = await this._readUserByUsername(data.username);
+    if (!user) throw new NotFoundException('Username is not found');
 
     // verify password
     if (!(await this.hashService.verify(data.password, user.password_hash)))
       throw new UnauthorizedException('Password is wrong');
 
     return {
-      token: await this.jwtService.signAsync(user as JwtPayloadDto),
-      username: user.username,
-      role: user.role,
-      id: user.id,
-      createdAt: user.createdAt,
-      deletedAt: user.deletedAt,
-      updatedAt: user.updatedAt,
-    };
+      token: await this.jwtService.signAsync(
+        runtimePick(user, ['id', 'username', 'role']) as JwtPayloadDto,
+      ),
+      ...runtimeOmit(user, ['password_hash']),
+    } as LoginResponseDto;
   }
 }
