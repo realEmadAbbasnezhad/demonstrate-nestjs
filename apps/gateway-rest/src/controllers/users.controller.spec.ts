@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UsersController } from './users.controller';
+import { UsersController } from '@gateway-rest/controllers/users.controller';
 import { UsersService } from '@gateway-rest/providers/users.service';
 import { AuthService } from '@gateway-rest/providers/auth/auth.service';
 import {
