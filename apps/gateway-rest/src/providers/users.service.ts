@@ -3,8 +3,8 @@ import { ClientProxy } from '@nestjs/microservices';
 import {
   CreateUserDto,
   CreateUserResponseDto,
-  FindUserDto,
-  FindUserResponseDto,
+  ReadUserDto,
+  ReadUserResponseDto,
   UpdateUserDto,
   UpdateUserMicroserviceDto,
 } from '@contracts/microservice/auth/users.dto';
@@ -24,19 +24,19 @@ export class UsersService {
     );
   }
 
-  public findAll(): Promise<FindUserResponseDto[]> {
+  public read(
+    id: number | undefined,
+    username: string | undefined,
+  ): Promise<ReadUserResponseDto> {
     return firstValueFrom(
-      this.authMicroservice.send(AuthCommands.UsersGet, {} as FindUserDto),
+      this.authMicroservice.send(AuthCommands.UsersRead, {
+        id,
+        username,
+      } as ReadUserDto),
     );
   }
 
-  public findOne(id: number): Promise<FindUserResponseDto> {
-    return firstValueFrom(
-      this.authMicroservice.send(AuthCommands.UsersGet, { id } as FindUserDto),
-    );
-  }
-
-  public update(id: number, body: UpdateUserDto): Promise<FindUserResponseDto> {
+  public update(id: number, body: UpdateUserDto): Promise<ReadUserResponseDto> {
     return firstValueFrom(
       this.authMicroservice.send(AuthCommands.UsersUpdate, {
         id,
@@ -45,7 +45,7 @@ export class UsersService {
     );
   }
 
-  public remove(id: number): Promise<void> {
+  public delete(id: number): Promise<void> {
     return firstValueFrom(
       this.authMicroservice.send(AuthCommands.UsersDelete, id),
     );
