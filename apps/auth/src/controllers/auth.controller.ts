@@ -7,19 +7,19 @@ import {
   type LoginDto,
   LoginResponseDto,
 } from '@contracts/microservice/auth/auth.dto';
-import { AuthService } from '../providers/auth.service';
+import { AuthService } from '@auth/providers/auth.service';
 
 @Controller()
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @MessagePattern(AuthCommands.AuthLogin)
-  check(@Payload() payload: LoginDto): Promise<LoginResponseDto> {
+  public async check(@Payload() payload: LoginDto): Promise<LoginResponseDto> {
     return this.authService.login(payload);
   }
 
   @MessagePattern(AuthCommands.AuthProcessAuthParam)
-  processAuthParam(
+  public async processAuthParam(
     @Payload() payload: AuthParamDto,
   ): Promise<AuthParamResponseDto> {
     return this.authService.processAuthParam(payload);
