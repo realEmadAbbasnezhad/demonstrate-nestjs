@@ -5,5 +5,5 @@ export const AuthCommands = {
   UsersCreate: 'users.create',
   UsersUpdate: 'users.update',
   UsersDelete: 'users.delete',
-  UsersGet: 'users.get',
+  UsersRead: 'users.read',
 } as const;

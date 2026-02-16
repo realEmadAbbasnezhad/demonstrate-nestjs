@@ -4,6 +4,7 @@ import { IsNotEmpty, IsString, Matches, MinLength } from 'class-validator';
 
 export class JwtPayloadDto {
   id: number;
+  username: string;
   role: $Enums.Role;
 }
 
@@ -29,12 +30,48 @@ export class LoginDto {
   password: string;
 }
 export class LoginResponseDto {
+  @ApiProperty({ description: 'User identifier', example: 1 })
   id: number;
+
+  @ApiProperty({ description: 'Username', example: 'admin' })
   username: string;
+
+  @ApiProperty({
+    description: 'Role of the user',
+    enum: Object.values($Enums.Role),
+    example: 'ADMIN',
+  })
   role: $Enums.Role;
+
+  @ApiProperty({
+    description: 'Creation timestamp',
+    type: String,
+    format: 'date-time',
+    example: new Date().toISOString(),
+  })
   createdAt: Date;
+
+  @ApiProperty({
+    description: 'Last update timestamp',
+    type: String,
+    format: 'date-time',
+    example: new Date().toISOString(),
+  })
   updatedAt: Date;
+
+  @ApiProperty({
+    description: 'Deletion timestamp if soft-deleted',
+    type: String,
+    format: 'date-time',
+    nullable: true,
+    example: null,
+  })
   deletedAt: Date | null;
+
+  @ApiProperty({
+    description: 'JWT token',
+    example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
+  })
   token: string;
 }
 
