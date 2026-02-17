@@ -72,7 +72,7 @@ export class UsersController {
     return this.usersService.create(body);
   }
 
-  @ApiOperation({ summary: 'get a user accounts' })
+  @ApiOperation({ summary: 'get a user account or all users' })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Success',
