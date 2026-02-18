@@ -11,19 +11,12 @@ import { CartService } from '@gateway-rest/providers/cart.service';
 import { OrderController } from '@gateway-rest/controllers/order.controller';
 import { OrderService } from '@gateway-rest/providers/order.service';
 import { GatewayExceptionModule } from '@common-gateway/exception/gateway-exception.module';
-import { AuthContractsModule } from '@contracts/auth/auth.module';
+import { AuthContractsModule } from '@contracts/auth/contracts-auth.module';
 
 @Module({
   imports: [
     ConfigModule,
     ClientsModule.register([
-      {
-        name: 'AUTH_MICROSERVICE',
-        transport: Transport.TCP,
-        options: {
-          port: new ConfigService().get<number>('PORT_AUTH') as number,
-        },
-      },
       {
         name: 'CATALOG_MICROSERVICE',
         transport: Transport.TCP,
@@ -52,11 +45,6 @@ import { AuthContractsModule } from '@contracts/auth/auth.module';
     CartController,
     OrderController,
   ],
-  providers: [
-    ProductsService,
-
-    CartService,
-    OrderService,
-  ],
+  providers: [ProductsService, CartService, OrderService],
 })
 export class GatewayRestModule {}

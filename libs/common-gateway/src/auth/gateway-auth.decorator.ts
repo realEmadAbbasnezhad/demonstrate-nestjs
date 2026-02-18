@@ -1,5 +1,5 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-import { AuthParamDto } from '@contracts/microservice/auth/auth.dto';
+import { AuthParamDto } from '@contracts/auth/providers/auth.dto';
 import { Request } from 'express';
 
 export const Auth = createParamDecorator(

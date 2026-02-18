@@ -22,7 +22,7 @@ import {
 import { UpdateUserDto } from '@contracts/microservice/auth/users.dto';
 import { UsersService } from '@contracts/auth/providers/users.service';
 import type { AuthParamDto } from '@contracts/microservice/auth/auth.dto';
-import { Auth } from '@gateway-rest/providers/auth/auth.decorator';
+import { Auth } from '@common-gateway/auth/gateway-auth.decorator';
 import { AuthService } from '@contracts/auth/providers/auth.service';
 import { $Enums } from '@prisma/generated/auth';
 import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
