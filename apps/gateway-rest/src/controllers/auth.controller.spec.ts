@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AuthController } from '@gateway-rest/controllers/auth.controller';
-import { AuthService } from '@gateway-rest/providers/auth/auth.service';
+import { AuthController } from './auth.controller';
+import { AuthService } from '@contracts/auth/auth.service';
 import { LoginDto } from '@contracts/microservice/auth/auth.dto';
 import { $Enums } from '@prisma/generated/auth';
 import { NotFoundException, UnauthorizedException } from '@nestjs/common';

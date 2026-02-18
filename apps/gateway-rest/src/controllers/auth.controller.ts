@@ -4,7 +4,7 @@ import {
   LoginResponseDto,
 } from '@contracts/microservice/auth/auth.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { AuthService } from '@gateway-rest/providers/auth/auth.service';
+import { AuthService } from '@contracts/auth/auth.service';
 
 @Controller('auth')
 export class AuthController {

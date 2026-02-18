@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UsersController } from '@gateway-rest/controllers/users.controller';
-import { UsersService } from '@gateway-rest/providers/users.service';
-import { AuthService } from '@gateway-rest/providers/auth/auth.service';
+import { UsersController } from './users.controller';
+import { UsersService } from '@contracts/auth/users.service';
+import { AuthService } from '@contracts/auth/auth.service';
 import {
   CreateUserDto,
   UpdateUserDto,

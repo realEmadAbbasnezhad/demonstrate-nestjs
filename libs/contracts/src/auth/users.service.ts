@@ -7,9 +7,9 @@ import {
   ReadUserResponseDto,
   UpdateUserDto,
   UpdateUserMicroserviceDto,
-} from '@contracts/microservice/auth/users.dto';
+} from './users.dto';
 import { firstValueFrom } from 'rxjs';
-import { AuthCommands } from '@contracts/microservice/auth/auth.commands';
+import { AuthCommands } from './auth.commands';
 
 @Injectable()
 export class UsersService {

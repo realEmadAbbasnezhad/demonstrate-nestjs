@@ -20,10 +20,10 @@ import {
   ReadUserResponseDto,
 } from '@contracts/microservice/auth/users.dto';
 import { UpdateUserDto } from '@contracts/microservice/auth/users.dto';
-import { UsersService } from '@gateway-rest/providers/users.service';
+import { UsersService } from '@contracts/auth/users.service';
 import type { AuthParamDto } from '@contracts/microservice/auth/auth.dto';
 import { Auth } from '@gateway-rest/providers/auth/auth.decorator';
-import { AuthService } from '@gateway-rest/providers/auth/auth.service';
+import { AuthService } from '@contracts/auth/auth.service';
 import { $Enums } from '@prisma/generated/auth';
 import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
