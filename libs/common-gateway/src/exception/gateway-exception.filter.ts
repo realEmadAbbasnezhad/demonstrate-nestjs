@@ -7,10 +7,10 @@ import {
   Logger,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { ResponseExceptionDto } from './exception.dto';
+import { ResponseExceptionDto } from '@common-gateway/exception/gateway-exception.dto';
 
 @Catch()
-export class HttpExceptionsFilter implements ExceptionFilter {
+export class GatewayExceptionFilter implements ExceptionFilter {
   catch(exception: unknown, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
@@ -51,6 +51,7 @@ export class HttpExceptionsFilter implements ExceptionFilter {
         messageString = resp.message;
       }
 
+      // Check for validationErrors
       if ('validationErrors' in resp && Array.isArray(resp.validationErrors)) {
         const maybeArray = resp.validationErrors as unknown[];
         const validated: ValidationItem[] = [];
@@ -77,7 +78,6 @@ export class HttpExceptionsFilter implements ExceptionFilter {
             }
           }
         }
-
         if (validated.length > 0) validationErrors = validated;
       }
     }
