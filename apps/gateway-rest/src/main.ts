@@ -2,10 +2,10 @@ import { NestFactory } from '@nestjs/core';
 import { GatewayRestModule } from '@gateway-rest/gateway-rest.module';
 import { ConfigService } from '@nestjs/config';
 import { BadRequestException, Logger, ValidationPipe } from '@nestjs/common';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { HttpExceptionsFilter } from '@gateway-rest/providers/exception/exeption.filter';
-import { ExceptionDto } from '@gateway-rest/providers/exception/exception.dto';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import helmet from 'helmet';
+import { ExceptionDto } from '@common-gateway/exception/gateway-exception.dto';
+import { GatewayExceptionFilter } from '@common-gateway/exception/gateway-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(GatewayRestModule);
@@ -48,7 +48,7 @@ async function bootstrap() {
       },
     }),
   );
-  app.useGlobalFilters(new HttpExceptionsFilter());
+  app.useGlobalFilters(new GatewayExceptionFilter());
 
   const port = configService.get<number>('PORT_GATEWAY_REST') as number;
   Logger.log(`RESTful Gateway is running on port ${port}`, 'Bootstrap');

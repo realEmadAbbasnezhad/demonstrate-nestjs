@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { AuthService } from './auth.service';
-import { UsersService } from './users.service';
+import { AuthService } from './providers/auth.service';
+import { UsersService } from './providers/users.service';
 
 @Module({
   imports: [

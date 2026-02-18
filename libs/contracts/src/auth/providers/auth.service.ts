@@ -6,7 +6,7 @@ import {
   LoginResponseDto,
 } from './auth.dto';
 import { ClientProxy } from '@nestjs/microservices';
-import { AuthCommands } from './auth.commands';
+import { AuthCommands } from '../auth.commands';
 import { firstValueFrom } from 'rxjs';
 
 @Injectable()
