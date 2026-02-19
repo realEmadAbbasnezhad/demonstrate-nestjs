@@ -4,6 +4,6 @@ import { Query, Resolver } from '@nestjs/graphql';
 export class RootResolver {
   @Query(() => String)
   public ping(): string {
-    return 'OK';
+    return `pong!`;
   }
 }

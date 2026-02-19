@@ -27,7 +27,7 @@ export class UsersService {
   public read(
     id: number | undefined,
     username: string | undefined,
-  ): Promise<ReadUserResponseDto> {
+  ): Promise<ReadUserResponseDto[]> {
     return firstValueFrom(
       this.authMicroservice.send(AuthCommands.UsersRead, {
         id,

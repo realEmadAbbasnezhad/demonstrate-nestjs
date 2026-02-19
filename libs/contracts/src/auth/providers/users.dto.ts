@@ -8,12 +8,24 @@ import {
   MinLength,
 } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import {
+  Field,
+  InputType,
+  ObjectType,
+  registerEnumType,
+} from '@nestjs/graphql';
 
+registerEnumType($Enums.Role, {
+  name: 'Role',
+});
+
+@InputType()
 export class CreateUserDto {
   @ApiProperty({
     description: 'username of user',
     example: 'admin',
   })
+  @Field()
   @IsString()
   @IsNotEmpty()
   @Matches(/^[a-zA-Z0-9]+$/, {
@@ -25,6 +37,7 @@ export class CreateUserDto {
     description: 'a strong password for your user',
     example: 'password',
   })
+  @Field()
   @IsString()
   @IsNotEmpty()
   @MinLength(8)
@@ -35,16 +48,20 @@ export class CreateUserDto {
     description: 'role of new user, it wont apply if caller is not admin',
     example: 'ADMIN',
   })
+  @Field(() => $Enums.Role, { nullable: true })
   @IsEnum($Enums.Role)
   @IsOptional()
   role?: $Enums.Role;
 }
 
+@ObjectType()
 export class CreateUserResponseDto {
   @ApiProperty({ description: 'User identifier', example: 1 })
+  @Field()
   id: number;
 
   @ApiProperty({ description: 'Username', example: 'admin' })
+  @Field()
   username: string;
 
   @ApiProperty({
@@ -52,6 +69,7 @@ export class CreateUserResponseDto {
     enum: Object.values($Enums.Role),
     example: 'ADMIN',
   })
+  @Field(() => $Enums.Role)
   role: $Enums.Role;
 
   @ApiProperty({
@@ -60,6 +78,7 @@ export class CreateUserResponseDto {
     format: 'date-time',
     example: new Date().toISOString(),
   })
+  @Field()
   createdAt: Date;
 
   @ApiProperty({
@@ -68,6 +87,7 @@ export class CreateUserResponseDto {
     format: 'date-time',
     example: new Date().toISOString(),
   })
+  @Field()
   updatedAt: Date;
 
   @ApiProperty({
@@ -77,20 +97,25 @@ export class CreateUserResponseDto {
     nullable: true,
     example: null,
   })
+  @Field(() => Date, { nullable: true })
   deletedAt: Date | null;
 
   @ApiProperty({
     description: 'JWT token for authentication',
     example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
   })
+  @Field()
   token: string;
 }
 
+@ObjectType()
 export class ReadUserResponseDto {
   @ApiProperty({ description: 'User identifier', example: 1 })
+  @Field()
   id: number;
 
   @ApiProperty({ description: 'Username', example: 'admin' })
+  @Field()
   username: string;
 
   @ApiProperty({
@@ -98,6 +123,7 @@ export class ReadUserResponseDto {
     enum: Object.values($Enums.Role),
     example: 'ADMIN',
   })
+  @Field(() => $Enums.Role)
   role: $Enums.Role;
 
   @ApiProperty({
@@ -106,6 +132,7 @@ export class ReadUserResponseDto {
     format: 'date-time',
     example: new Date().toISOString(),
   })
+  @Field()
   createdAt: Date;
 
   @ApiProperty({
@@ -114,6 +141,7 @@ export class ReadUserResponseDto {
     format: 'date-time',
     example: new Date().toISOString(),
   })
+  @Field()
   updatedAt: Date;
 
   @ApiProperty({
@@ -123,14 +151,17 @@ export class ReadUserResponseDto {
     nullable: true,
     example: null,
   })
+  @Field(() => Date, { nullable: true })
   deletedAt: Date | null;
 }
 
+@InputType()
 export class UpdateUserDto {
   @ApiPropertyOptional({
     description: 'username of user',
     example: 'admin',
   })
+  @Field({ nullable: true })
   @IsString()
   @IsOptional()
   @Matches(/^[a-zA-Z0-9]+$/, {
@@ -142,6 +173,7 @@ export class UpdateUserDto {
     description: 'a strong password for your user',
     example: 'password',
   })
+  @Field({ nullable: true })
   @IsString()
   @IsOptional()
   @MinLength(8)
@@ -152,16 +184,19 @@ export class UpdateUserDto {
     description: 'role of new user, it wont apply if caller is not admin',
     example: 'ADMIN',
   })
+  @Field(() => $Enums.Role, { nullable: true })
   @IsEnum($Enums.Role)
   @IsOptional()
   role?: $Enums.Role;
 }
 
+@InputType()
 export class ReadUserDto {
   @ApiPropertyOptional({
     description: 'User identifier',
     example: 1,
   })
+  @Field(() => String, { nullable: true })
   @IsOptional()
   @IsString()
   id?: number;
@@ -170,6 +205,7 @@ export class ReadUserDto {
     description: 'Username',
     example: 'admin',
   })
+  @Field({ nullable: true })
   @IsOptional()
   @IsString()
   username?: string;

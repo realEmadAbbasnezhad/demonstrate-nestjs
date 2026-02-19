@@ -8,6 +8,7 @@ import { GatewayExceptionFilter } from '@common-gateway/exception/gateway-except
 import { ConfigService } from '@nestjs/config';
 import { join } from 'path';
 import { RootResolver } from './resolvers/root.resolver';
+import { UserResolver } from './resolvers/user.resolver';
 
 @Module({
   imports: [
@@ -25,6 +26,6 @@ import { RootResolver } from './resolvers/root.resolver';
     AuthContractsModule,
   ],
   controllers: [],
-  providers: [AuthResolver, RootResolver],
+  providers: [AuthResolver, UserResolver, RootResolver],
 })
 export class GatewayGraphqlModule {}
