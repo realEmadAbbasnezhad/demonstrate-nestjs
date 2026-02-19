@@ -1,10 +1,9 @@
 import { NestFactory } from '@nestjs/core';
 import { GatewayRestModule } from '@gateway-rest/gateway-rest.module';
 import { ConfigService } from '@nestjs/config';
-import { BadRequestException, Logger, ValidationPipe } from '@nestjs/common';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
+import { Logger, ValidationPipe } from '@nestjs/common';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import helmet from 'helmet';
-import { ExceptionDto } from '@common-gateway/exception/gateway-exception.dto';
 import { GatewayExceptionFilter } from '@common-gateway/exception/gateway-exception.filter';
 
 async function bootstrap() {
@@ -40,12 +39,8 @@ async function bootstrap() {
   // Global validation pipe
   app.useGlobalPipes(
     new ValidationPipe({
-      exceptionFactory: (errors) => {
-        throw new BadRequestException({
-          validationErrors: errors,
-          message: '',
-        } as ExceptionDto);
-      },
+      exceptionFactory: (errors) =>
+        GatewayExceptionFilter.ValidationExceptionFactory(errors),
     }),
   );
   app.useGlobalFilters(new GatewayExceptionFilter());

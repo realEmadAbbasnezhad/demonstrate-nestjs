@@ -12,4 +12,10 @@ export const ENV_SCHEMA = Joi.object({
   REDIS_URL: Joi.string().default('redis://user:password@localhost:6379/0'),
   ES_URL: Joi.string().default('http://localhost:9200'),
   PORT_ORDER: Joi.number().port().default(3003),
+
+  ENABLE_GRAPHIQL: Joi.boolean().default(true),
+  GRAPHIQL_PATH: Joi.string()
+    .pattern(/^[a-zA-Z0-9_/-]+$/)
+    .default('graphql'),
+  GRAPHIQL_GATEWAY_PORT: Joi.number().port().default(8081),
 } as Joi.SchemaMap);

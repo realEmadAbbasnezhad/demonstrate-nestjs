@@ -5,18 +5,21 @@ import {
   HttpException,
   HttpStatus,
   Logger,
+  BadRequestException,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import {
+  ExceptionDto,
   GraphQLResponseExceptionDto,
   ResponseExceptionDto,
 } from '@common-gateway/exception/gateway-exception.dto';
 import { GraphQLError } from 'graphql/error';
 import type { GraphQLFormattedError } from 'graphql/index';
+import { ValidationError } from '@nestjs/common/interfaces/external/validation-error.interface';
 
 @Catch()
 export class GatewayExceptionFilter implements ExceptionFilter {
-  catch(exception: unknown, host: ArgumentsHost) {
+  public catch(exception: unknown, host: ArgumentsHost) {
     const contextType = host.getType<'http' | 'graphql'>();
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
@@ -126,6 +129,13 @@ export class GatewayExceptionFilter implements ExceptionFilter {
         return;
       }
     }
+  }
+
+  public static ValidationExceptionFactory(errors: ValidationError[]) {
+    throw new BadRequestException({
+      validationErrors: errors,
+      message: '',
+    } as ExceptionDto);
   }
 
   public static FormatGraphQLError(

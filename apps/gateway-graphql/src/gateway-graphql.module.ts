@@ -2,9 +2,12 @@ import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { ConfigModule } from '@common/config/config.module';
-import { AuthResolver, HealthResolver } from './resolvers/auth.resolver';
+import { AuthResolver } from './resolvers/auth.resolver';
 import { AuthContractsModule } from '@contracts/auth/contracts-auth.module';
 import { GatewayExceptionFilter } from '@common-gateway/exception/gateway-exception.filter';
+import { ConfigService } from '@nestjs/config';
+import { join } from 'path';
+import { RootResolver } from './resolvers/root.resolver';
 
 @Module({
   imports: [
@@ -14,14 +17,14 @@ import { GatewayExceptionFilter } from '@common-gateway/exception/gateway-except
       formatError: (formattedError, rawError) =>
         GatewayExceptionFilter.FormatGraphQLError(formattedError, rawError),
 
-      graphiql: true,
-      autoSchemaFile: true,
-      debug: false,
+      graphiql: new ConfigService().get<boolean>('ENABLE_GRAPHIQL'),
+      path: new ConfigService().get<string>('GRAPHIQL_PATH'),
+      autoSchemaFile: join(process.cwd(), 'graphql/schema.gql'),
     }),
 
     AuthContractsModule,
   ],
   controllers: [],
-  providers: [AuthResolver, HealthResolver],
+  providers: [AuthResolver, RootResolver],
 })
 export class GatewayGraphqlModule {}

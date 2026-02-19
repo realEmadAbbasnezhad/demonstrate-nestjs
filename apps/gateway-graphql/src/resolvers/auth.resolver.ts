@@ -1,4 +1,4 @@
-import { Args, Mutation, Resolver, Query } from '@nestjs/graphql';
+import { Args, Mutation, Resolver } from '@nestjs/graphql';
 import { LoginDto, LoginResponseDto } from '@contracts/auth/providers/auth.dto';
 import { AuthService } from '@contracts/auth/providers/auth.service';
 
@@ -9,15 +9,9 @@ export class AuthResolver {
   @Mutation(() => LoginResponseDto, {
     description: 'Login to your account',
   })
-  async login(@Args('input') input: LoginDto): Promise<LoginResponseDto> {
+  public async login(
+    @Args('input') input: LoginDto,
+  ): Promise<LoginResponseDto> {
     return this.authService.login(input);
-  }
-}
-
-@Resolver()
-export class HealthResolver {
-  @Query(() => String, { description: 'Health check endpoint' })
-  health(): string {
-    return 'OK';
   }
 }
