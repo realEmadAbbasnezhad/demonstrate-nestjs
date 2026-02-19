@@ -23,12 +23,13 @@
     "noFallthroughCasesInSwitch": false,
     "paths": {
       "@auth/*": ["apps/auth/src/*"],
+      "@catalog/*": ["apps/catalog/src/*"],
+      "@common-gateway/*": ["libs/common-gateway/src/*"],
       "@common/*": ["libs/common/src/*"],
       "@contracts/*": ["libs/contracts/src/*"],
       "@gateway-rest/*": ["apps/gateway-rest/src/*"],
-      "@prisma/*": ["prisma/*"],
-      "@catalog/*": ["apps/catalog/src/*"],
       "@order/*": ["apps/order/src/*"],
+      "@prisma/*": ["prisma/*"]
     }
   }
 }

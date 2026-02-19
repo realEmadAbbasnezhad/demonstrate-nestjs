@@ -37,6 +37,15 @@
         "tsConfigPath": "libs/common/tsconfig.lib.json"
       }
     },
+    "common-gateway": {
+      "type": "library",
+      "root": "libs/common-gateway",
+      "entryFile": "index",
+      "sourceRoot": "libs/common-gateway/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/common-gateway/tsconfig.lib.json"
+      }
+    },
     "contracts": {
       "type": "library",
       "root": "libs/contracts",
@@ -53,6 +62,15 @@
       "sourceRoot": "apps/demonstrate-nestjs/src",
       "compilerOptions": {
         "tsConfigPath": "apps/demonstrate-nestjs/tsconfig.app.json"
+      }
+    },
+    "gateway-graphql": {
+      "type": "application",
+      "root": "apps/gateway-graphql",
+      "entryFile": "main",
+      "sourceRoot": "apps/gateway-graphql/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/gateway-graphql/tsconfig.app.json"
       }
     },
     "gateway-rest": {

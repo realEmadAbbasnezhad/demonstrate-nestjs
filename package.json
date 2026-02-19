@@ -12,7 +12,7 @@
     "start-auth:dev": "nest start auth --debug --watch",
     "start-catalog:dev": "nest start catalog --debug --watch",
     "start-order:dev": "nest start order --debug --watch",
-    "start:prod": "node dist/apps/demonstrate-nestjs/main",
+    "start-gateway-graphql:dev": "nest start gateway-graphql --debug --watch",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -21,13 +21,17 @@
     "test:e2e": "jest --config ./apps/demonstrate-nestjs/test/jest-e2e.json"
   },
   "dependencies": {
+    "@apollo/server": "^5.4.0",
+    "@as-integrations/express5": "^1.1.2",
     "@elastic/elasticsearch": "^9.3.1",
     "@keyv/redis": "^5.1.6",
+    "@nestjs/apollo": "^13.2.4",
     "@nestjs/cache-manager": "^3.1.0",
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.0.1",
     "@nestjs/elasticsearch": "^11.1.0",
+    "@nestjs/graphql": "^13.2.4",
     "@nestjs/jwt": "^11.0.2",
     "@nestjs/microservices": "^11.1.12",
     "@nestjs/platform-express": "^11.0.1",
@@ -37,10 +41,12 @@
     "cache-manager": "^7.2.8",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.3",
+    "graphql": "^16.12.0",
     "helmet": "^8.1.0",
     "joi": "^18.0.2",
     "reflect-metadata": "^0.2.2",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "ts-morph": "^27.0.2"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
@@ -89,8 +95,14 @@
       "<rootDir>/libs/"
     ],
     "moduleNameMapper": {
-      "^@app/common(|/.*)$": "<rootDir>/libs/common/src/$1",
-      "^@contracts/contracts(|/.*)$": "<rootDir>/libs/contracts/src/$1"
+      "^@app/common-gateway(|/.*)$": "<rootDir>/libs/common-gateway/src/$1",
+      "^@auth/(.*)$": "<rootDir>/apps/auth/src/$1",
+      "^@catalog/(.*)$": "<rootDir>/apps/catalog/src/$1",
+      "^@common/(.*)$": "<rootDir>/libs/common/src/$1",
+      "^@contracts/(.*)$": "<rootDir>/libs/contracts/src/$1",
+      "^@gateway-rest/(.*)$": "<rootDir>/apps/gateway-rest/src/$1",
+      "^@order/(.*)$": "<rootDir>/apps/order/src/$1",
+      "^@prisma/(.*)$": "<rootDir>/prisma/$1"
     }
   }
 }
