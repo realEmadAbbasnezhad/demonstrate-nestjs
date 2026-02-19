@@ -95,7 +95,7 @@
       "<rootDir>/libs/"
     ],
     "moduleNameMapper": {
-      "^@app/common-gateway(|/.*)$": "<rootDir>/libs/common-gateway/src/$1",
+      "^@common-gateway/(.*)$": "<rootDir>/libs/common-gateway/src/$1",
       "^@auth/(.*)$": "<rootDir>/apps/auth/src/$1",
       "^@catalog/(.*)$": "<rootDir>/apps/catalog/src/$1",
       "^@common/(.*)$": "<rootDir>/libs/common/src/$1",

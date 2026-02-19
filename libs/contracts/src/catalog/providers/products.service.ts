@@ -8,8 +8,8 @@ import {
   SearchProductResponseDto,
   UpdateProductDto,
   UpdateProductMicroserviceDto,
-} from '@contracts/microservice/catalog/products.dto';
-import { CatalogCommands } from '@contracts/microservice/catalog/catalog.commands';
+} from './products.dto';
+import { CatalogCommands } from '@contracts/catalog/catalog.commands';
 
 @Injectable()
 export class ProductsService {
@@ -18,7 +18,7 @@ export class ProductsService {
     private readonly catalogMicroservice: ClientProxy,
   ) {}
 
-  public create(body: CreateProductDto): Promise<FindProductResponseDto> {
+  public async create(body: CreateProductDto): Promise<FindProductResponseDto> {
     return firstValueFrom(
       this.catalogMicroservice.send(CatalogCommands.ProductsCreate, body),
     );
@@ -30,9 +30,9 @@ export class ProductsService {
     );
   }
 
-  public findOne(id: string): Promise<FindProductResponseDto> {
+  public read(id: string): Promise<FindProductResponseDto> {
     return firstValueFrom(
-      this.catalogMicroservice.send(CatalogCommands.ProductsGet, id),
+      this.catalogMicroservice.send(CatalogCommands.ProductsRead, id),
     );
   }
 
@@ -48,7 +48,7 @@ export class ProductsService {
     );
   }
 
-  public remove(id: string): Promise<void> {
+  public delete(id: string): Promise<void> {
     return firstValueFrom(
       this.catalogMicroservice.send(CatalogCommands.ProductsDelete, id),
     );
