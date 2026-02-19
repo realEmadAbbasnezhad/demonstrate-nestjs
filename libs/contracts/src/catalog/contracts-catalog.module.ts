@@ -18,6 +18,6 @@ import { ProductsService } from '@contracts/catalog/providers/products.service';
   ],
   controllers: [],
   providers: [ProductsService],
-  exports: [ClientsModule, ProductsService],
+  exports: [ProductsService],
 })
 export class CatalogContractsModule {}

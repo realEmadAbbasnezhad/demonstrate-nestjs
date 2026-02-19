@@ -46,6 +46,15 @@
         "tsConfigPath": "libs/common-gateway/tsconfig.lib.json"
       }
     },
+    "common-microservice": {
+      "type": "library",
+      "root": "libs/common-microservice",
+      "entryFile": "index",
+      "sourceRoot": "libs/common-microservice/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/common-microservice/tsconfig.lib.json"
+      }
+    },
     "contracts": {
       "type": "library",
       "root": "libs/contracts",

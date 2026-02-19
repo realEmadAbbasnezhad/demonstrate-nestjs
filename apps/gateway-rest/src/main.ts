@@ -1,5 +1,5 @@
 import { NestFactory } from '@nestjs/core';
-import { GatewayRestModule } from '@gateway-rest/gateway-rest.module';
+import { GatewayRestModule } from './gateway-rest.module';
 import { ConfigService } from '@nestjs/config';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
@@ -12,7 +12,7 @@ async function bootstrap() {
 
   // Swagger setup
   const swaggerEnabled = configService.get<boolean>(
-    'SWAGGER_ENABLED',
+    'ENABLE_SWAGGER',
   ) as boolean;
   if (swaggerEnabled) {
     const swaggerPath = configService.get<string>('SWAGGER_PATH') as string;
@@ -45,7 +45,7 @@ async function bootstrap() {
   );
   app.useGlobalFilters(new GatewayExceptionFilter());
 
-  const port = configService.get<number>('PORT_GATEWAY_REST') as number;
+  const port = configService.get<number>('GATEWAY_REST_PORT') as number;
   Logger.log(`RESTful Gateway is running on port ${port}`, 'Bootstrap');
   await app.listen(port);
 }

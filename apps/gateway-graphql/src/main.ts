@@ -50,7 +50,7 @@ async function bootstrap() {
   const port = new ConfigService().get<number>(
     'GRAPHIQL_GATEWAY_PORT',
   ) as number;
-  Logger.log(`RESTful Gateway is running on port ${port}`, 'Bootstrap');
+  Logger.log(`GraphQL Gateway is running on port ${port}`, 'Bootstrap');
   await app.listen(port);
 }
 void bootstrap().then();

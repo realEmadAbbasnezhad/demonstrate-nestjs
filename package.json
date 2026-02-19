@@ -95,12 +95,14 @@
       "<rootDir>/libs/"
     ],
     "moduleNameMapper": {
-      "^@common-gateway/(.*)$": "<rootDir>/libs/common-gateway/src/$1",
+      "^@common-microservice/(.*)$": "<rootDir>/libs/common-microservice/src/$1",
       "^@auth/(.*)$": "<rootDir>/apps/auth/src/$1",
       "^@catalog/(.*)$": "<rootDir>/apps/catalog/src/$1",
+      "^@common-gateway/(.*)$": "<rootDir>/libs/common-gateway/src/$1",
       "^@common/(.*)$": "<rootDir>/libs/common/src/$1",
       "^@contracts/(.*)$": "<rootDir>/libs/contracts/src/$1",
       "^@gateway-rest/(.*)$": "<rootDir>/apps/gateway-rest/src/$1",
+      "^@gateway-graphql/(.*)$": "<rootDir>/apps/gateway-graphql/src/$1",
       "^@order/(.*)$": "<rootDir>/apps/order/src/$1",
       "^@prisma/(.*)$": "<rootDir>/prisma/$1"
     }

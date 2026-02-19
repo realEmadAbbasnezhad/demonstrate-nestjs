@@ -25,9 +25,11 @@
       "@auth/*": ["apps/auth/src/*"],
       "@catalog/*": ["apps/catalog/src/*"],
       "@common-gateway/*": ["libs/common-gateway/src/*"],
+      "@common-microservice/*": ["libs/common-microservice/src/*"],
       "@common/*": ["libs/common/src/*"],
       "@contracts/*": ["libs/contracts/src/*"],
       "@gateway-rest/*": ["apps/gateway-rest/src/*"],
+      "@gateway-graphql/*": ["apps/gateway-graphql/src/*"],
       "@order/*": ["apps/order/src/*"],
       "@prisma/*": ["prisma/*"]
     }

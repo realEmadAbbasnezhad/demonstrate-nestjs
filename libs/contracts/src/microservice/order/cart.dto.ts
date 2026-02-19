@@ -1,5 +1,4 @@
-export class AddCartDto {
-}
+export class AddCartDto {}
 export class AddCartResponseDto {}
 
 export class FindCartResponseDto {}

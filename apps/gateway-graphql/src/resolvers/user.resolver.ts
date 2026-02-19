@@ -25,7 +25,7 @@ export class UserResolver {
   ) {}
 
   @Mutation(() => CreateUserResponseDto)
-  async userCreate(
+  public async userCreate(
     @Args('input') input: CreateUserDto,
     @Auth() auth: AuthParamDto,
   ): Promise<CreateUserResponseDto> {
@@ -45,7 +45,7 @@ export class UserResolver {
   }
 
   @Query(() => [ReadUserResponseDto])
-  async userRead(
+  public async userRead(
     @Args('input') input: ReadUserDto,
     @Auth() auth: AuthParamDto,
   ): Promise<ReadUserResponseDto[]> {
@@ -80,7 +80,7 @@ export class UserResolver {
   }
 
   @Mutation(() => ReadUserResponseDto)
-  async userUpdate(
+  public async userUpdate(
     @Args('id') id: number,
     @Args('input') input: UpdateUserDto,
     @Auth() auth: AuthParamDto,
@@ -103,7 +103,7 @@ export class UserResolver {
   }
 
   @Mutation(() => Boolean)
-  async userDelete(
+  public async userDelete(
     @Args('id') id: number,
     @Auth() auth: AuthParamDto,
   ): Promise<boolean> {

@@ -9,7 +9,7 @@ import {
 } from '@contracts/catalog/providers/products.dto';
 import { CatalogCommands } from '@contracts/catalog/catalog.commands';
 import { ProductsService } from '@catalog/providers/products.service';
-import { runtimeOmit } from '@common/pick-omit';
+import { runtimeOmit } from '@common/utils/pick-omit';
 
 @Controller()
 export class ProductsController {

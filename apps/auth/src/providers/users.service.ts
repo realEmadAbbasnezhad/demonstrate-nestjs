@@ -16,7 +16,7 @@ import {
   UpdateUserDto,
 } from '@contracts/auth/providers/users.dto';
 import { $Enums, Prisma, User } from '@prisma/generated/auth';
-import { runtimeOmit, runtimePick } from '@common/pick-omit';
+import { runtimeOmit, runtimePick } from '@common/utils/pick-omit';
 
 @Injectable()
 export class UsersService extends UserRepository {

@@ -8,10 +8,10 @@ import {
   Post,
   UnauthorizedException,
 } from '@nestjs/common';
-import { AuthService } from '@gateway-rest/providers/auth/auth.service';
+import { AuthService } from '@contracts/auth/providers/auth.service';
 import { ApiOperation } from '@nestjs/swagger';
-import { Auth } from '@gateway-rest/providers/auth/auth.decorator';
-import type { AuthParamDto } from '@contracts/microservice/auth/auth.dto';
+import { Auth } from '@common-gateway/auth/gateway-auth.decorator';
+import type { AuthParamDto } from '@contracts/auth/providers/auth.dto';
 import { $Enums } from '@prisma/generated/auth';
 import { CartService } from '@gateway-rest/providers/cart.service';
 import {
@@ -21,7 +21,7 @@ import {
   FindCartResponseDto,
 } from '@contracts/microservice/order/cart.dto';
 
-@Controller('cart')
+@Controller('carts')
 export class CartController {
   constructor(
     private readonly cartService: CartService,

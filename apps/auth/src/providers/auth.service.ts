@@ -13,7 +13,7 @@ import {
 } from '@contracts/auth/providers/auth.dto';
 import { UserRepository } from '@auth/repository/user.repository';
 import { HashService } from '@common/hash/hash.service';
-import { runtimeOmit, runtimePick } from '@common/pick-omit';
+import { runtimeOmit, runtimePick } from '@common/utils/pick-omit';
 
 @Injectable()
 export class AuthService extends UserRepository {
