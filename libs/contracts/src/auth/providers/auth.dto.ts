@@ -1,18 +1,36 @@
 import { $Enums } from '@prisma/generated/auth';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString, Matches, MinLength } from 'class-validator';
+import {
+  Field,
+  InputType,
+  ObjectType,
+  registerEnumType,
+} from '@nestjs/graphql';
 
+registerEnumType($Enums.Role, {
+  name: 'Role',
+});
+
+@ObjectType()
 export class JwtPayloadDto {
+  @Field()
   id: number;
+
+  @Field()
   username: string;
+
+  @Field(() => $Enums.Role)
   role: $Enums.Role;
 }
 
+@InputType()
 export class LoginDto {
   @ApiProperty({
     description: 'username of user',
     example: 'admin',
   })
+  @Field()
   @IsString()
   @IsNotEmpty()
   @Matches(/^[a-zA-Z0-9]+$/, {
@@ -24,16 +42,21 @@ export class LoginDto {
     description: 'a strong password for your user',
     example: 'password',
   })
+  @Field()
   @IsString()
   @IsNotEmpty()
   @MinLength(8)
   password: string;
 }
+
+@ObjectType()
 export class LoginResponseDto {
   @ApiProperty({ description: 'User identifier', example: 1 })
+  @Field()
   id: number;
 
   @ApiProperty({ description: 'Username', example: 'admin' })
+  @Field()
   username: string;
 
   @ApiProperty({
@@ -41,6 +64,7 @@ export class LoginResponseDto {
     enum: Object.values($Enums.Role),
     example: 'ADMIN',
   })
+  @Field(() => $Enums.Role)
   role: $Enums.Role;
 
   @ApiProperty({
@@ -49,6 +73,7 @@ export class LoginResponseDto {
     format: 'date-time',
     example: new Date().toISOString(),
   })
+  @Field()
   createdAt: Date;
 
   @ApiProperty({
@@ -57,6 +82,7 @@ export class LoginResponseDto {
     format: 'date-time',
     example: new Date().toISOString(),
   })
+  @Field()
   updatedAt: Date;
 
   @ApiProperty({
@@ -66,12 +92,14 @@ export class LoginResponseDto {
     nullable: true,
     example: null,
   })
+  @Field(() => Date, { nullable: true })
   deletedAt: Date | null;
 
   @ApiProperty({
     description: 'JWT token',
     example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
   })
+  @Field()
   token: string;
 }
 
