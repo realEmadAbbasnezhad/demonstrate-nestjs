@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { JwtService } from '@nestjs/jwt';
 import { NotFoundException, UnauthorizedException } from '@nestjs/common';
-import { AuthService } from '@auth/providers/auth.service';
+import { AuthService } from './auth.service';
 import { HashService } from '@common/hash/hash.service';
 import { $Enums, User } from '@prisma/generated/auth';
 

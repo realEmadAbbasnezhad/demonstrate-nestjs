@@ -1,12 +1,12 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
-import { AuthCommands } from '@contracts/microservice/auth/auth.commands';
+import { AuthCommands } from '@contracts/auth/auth.commands';
 import {
   type AuthParamDto,
   AuthParamResponseDto,
   type LoginDto,
   LoginResponseDto,
-} from '@contracts/microservice/auth/auth.dto';
+} from '@contracts/auth/providers/auth.dto';
 import { AuthService } from '@auth/providers/auth.service';
 
 @Controller()

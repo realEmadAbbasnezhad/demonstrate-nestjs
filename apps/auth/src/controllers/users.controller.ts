@@ -1,6 +1,6 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
-import { AuthCommands } from '@contracts/microservice/auth/auth.commands';
+import { AuthCommands } from '@contracts/auth/auth.commands';
 import { UsersService } from '@auth/providers/users.service';
 import {
   CreateUserDto,
@@ -8,7 +8,7 @@ import {
   ReadUserDto,
   ReadUserResponseDto,
   type UpdateUserMicroserviceDto,
-} from '@contracts/microservice/auth/users.dto';
+} from '@contracts/auth/providers/users.dto';
 
 @Controller()
 export class UsersController {

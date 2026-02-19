@@ -10,7 +10,7 @@ import {
   JwtPayloadDto,
   LoginDto,
   LoginResponseDto,
-} from '@contracts/microservice/auth/auth.dto';
+} from '@contracts/auth/providers/auth.dto';
 import { UserRepository } from '@auth/repository/user.repository';
 import { HashService } from '@common/hash/hash.service';
 import { runtimeOmit, runtimePick } from '@common/pick-omit';

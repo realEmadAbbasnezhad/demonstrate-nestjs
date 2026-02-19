@@ -5,14 +5,14 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
-import { UsersService } from '@auth/providers/users.service';
+import { UsersService } from './users.service';
 import { HashService } from '@common/hash/hash.service';
 import { $Enums, Prisma, User } from '@prisma/generated/auth';
 import {
   CreateUserDto,
   ReadUserDto,
   UpdateUserDto,
-} from '@contracts/microservice/auth/users.dto';
+} from '@contracts/auth/providers/users.dto';
 
 describe('UsersService - Business Logic', () => {
   let service: UsersService;

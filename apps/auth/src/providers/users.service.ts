@@ -7,14 +7,14 @@ import {
 import { UserRepository } from '@auth/repository/user.repository';
 import { JwtService } from '@nestjs/jwt';
 import { HashService } from '@common/hash/hash.service';
-import { JwtPayloadDto } from '@contracts/microservice/auth/auth.dto';
+import { JwtPayloadDto } from '@contracts/auth/providers/auth.dto';
 import {
   CreateUserDto,
   CreateUserResponseDto,
   ReadUserDto,
   ReadUserResponseDto,
   UpdateUserDto,
-} from '@contracts/microservice/auth/users.dto';
+} from '@contracts/auth/providers/users.dto';
 import { $Enums, Prisma, User } from '@prisma/generated/auth';
 import { runtimeOmit, runtimePick } from '@common/pick-omit';
 
