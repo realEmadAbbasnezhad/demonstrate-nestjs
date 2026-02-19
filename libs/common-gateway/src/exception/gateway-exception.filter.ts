@@ -35,7 +35,7 @@ export class GatewayExceptionFilter implements ExceptionFilter {
 
     // Log the exception if it's a server error (status code 5xx)
     if (status >= 500 && status < 600) {
-      Logger.error(exception, 'ExceptionFilter');
+      Logger.error(exception, 'GatewayExceptionFilter');
     }
 
     // Safely extract message or validationErrors from the exception response

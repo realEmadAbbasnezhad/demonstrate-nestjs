@@ -1,6 +1,6 @@
 import { Catch, HttpStatus, Logger, RpcExceptionFilter } from '@nestjs/common';
 import { Observable, throwError } from 'rxjs';
-import { MicroserviceExceptionDto } from '@contracts/microservice/microservice.dto';
+import { MicroserviceExceptionDto } from './microservice-exception.dto';
 
 @Catch()
 export class MicroserviceExceptionFilter implements RpcExceptionFilter {
