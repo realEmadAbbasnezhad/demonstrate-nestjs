@@ -6,8 +6,8 @@ import {
   SearchProductDto,
   SearchProductResponseDto,
   type UpdateProductMicroserviceDto,
-} from '@contracts/microservice/catalog/products.dto';
-import { CatalogCommands } from '@contracts/microservice/catalog/catalog.commands';
+} from '@contracts/catalog/providers/products.dto';
+import { CatalogCommands } from '@contracts/catalog/catalog.commands';
 import { ProductsService } from '@catalog/providers/products.service';
 import { runtimeOmit } from '@common/pick-omit';
 
@@ -22,9 +22,9 @@ export class ProductsController {
     return this.productsService.create(payload);
   }
 
-  @MessagePattern(CatalogCommands.ProductsGet)
-  find(id: string): Promise<FindProductResponseDto> {
-    return this.productsService.find(id);
+  @MessagePattern(CatalogCommands.ProductsRead)
+  read(id: string): Promise<FindProductResponseDto> {
+    return this.productsService.read(id);
   }
   @MessagePattern(CatalogCommands.ProductsSearch)
   search(
@@ -42,7 +42,7 @@ export class ProductsController {
   }
 
   @MessagePattern(CatalogCommands.ProductsDelete)
-  remove(id: string): Promise<null> {
-    return this.productsService.remove(id);
+  delete(id: string): Promise<null> {
+    return this.productsService.delete(id);
   }
 }

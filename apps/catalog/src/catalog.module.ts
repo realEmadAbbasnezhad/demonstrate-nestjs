@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@common/config/config.module';
-import { ExceptionModule } from '@common/exception/exception.module';
 import { ProductsController } from '@catalog/controllers/products.controller';
 import { ProductsService } from '@catalog/providers/products.service';
 import KeyvRedis from '@keyv/redis';
@@ -11,7 +10,6 @@ import { ElasticsearchModule } from '@nestjs/elasticsearch';
 @Module({
   imports: [
     ConfigModule,
-    ExceptionModule,
     CacheModule.register({
       store: new KeyvRedis(
         new ConfigService().get<string>('REDIS_URL') as string,

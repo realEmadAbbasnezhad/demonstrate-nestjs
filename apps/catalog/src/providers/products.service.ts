@@ -13,7 +13,7 @@ import {
   SearchProductDto,
   SearchProductResponseDto,
   UpdateProductDto,
-} from '@contracts/microservice/catalog/products.dto';
+} from '@contracts/catalog/providers/products.dto';
 import { ProductsRepository } from '@catalog/repository/products.repository';
 import { Prisma, Product } from '@prisma/generated/catalog';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
@@ -64,7 +64,7 @@ export class ProductsService extends ProductsRepository {
     return result;
   }
 
-  public async find(id: string): Promise<FindProductResponseDto> {
+  public async read(id: string): Promise<FindProductResponseDto> {
     const cache = await this.cacheManager.get<FindProductResponseDto>(
       `product.${id}`,
     );
@@ -72,12 +72,12 @@ export class ProductsService extends ProductsRepository {
 
     let result: Product | null = null;
     try {
-      result = await this._getProductById(id);
+      result = await this._readProductById(id);
     } catch (e) {
       if (e instanceof Prisma.PrismaClientKnownRequestError) {
         if (e.code === 'P2023') {
           try {
-            result = await this._getProductBySlug(id);
+            result = await this._readProductBySlug(id);
           } catch (e) {
             if (e instanceof Prisma.PrismaClientKnownRequestError) {
               throw new BadRequestException(`Invalid product id`);
@@ -201,9 +201,9 @@ export class ProductsService extends ProductsRepository {
     return result;
   }
 
-  public async remove(id: string): Promise<null> {
+  public async delete(id: string): Promise<null> {
     try {
-      const resalt = await this._getProductById(id);
+      const resalt = await this._readProductById(id);
       if (resalt == null || resalt.deletedAt != null) {
         throw new Prisma.PrismaClientKnownRequestError('', {
           code: 'P2025',

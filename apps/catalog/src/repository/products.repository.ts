@@ -10,13 +10,13 @@ export abstract class ProductsRepository extends CatalogRepository {
     });
   }
 
-  protected _getProductById(id: string): Promise<Product | null> {
+  protected _readProductById(id: string): Promise<Product | null> {
     return this.prisma.product.findFirst({
       where: { id, AND: { deletedAt: null } },
     });
   }
 
-  protected _getProductBySlug(slug: string): Promise<Product | null> {
+  protected _readProductBySlug(slug: string): Promise<Product | null> {
     return this.prisma.product.findFirst({
       where: { slug, AND: { deletedAt: null } },
     });
