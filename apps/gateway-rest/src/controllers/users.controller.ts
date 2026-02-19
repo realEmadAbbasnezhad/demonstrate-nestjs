@@ -18,14 +18,14 @@ import {
   CreateUserResponseDto,
   ReadUserDto,
   ReadUserResponseDto,
-} from '@contracts/microservice/auth/users.dto';
-import { UpdateUserDto } from '@contracts/microservice/auth/users.dto';
+  UpdateUserDto,
+} from '@contracts/auth/providers/users.dto';
 import { UsersService } from '@contracts/auth/providers/users.service';
-import type { AuthParamDto } from '@contracts/microservice/auth/auth.dto';
-import { Auth } from '@common-gateway/auth/gateway-auth.decorator';
+import type { AuthParamDto } from '@contracts/auth/providers/auth.dto';
 import { AuthService } from '@contracts/auth/providers/auth.service';
 import { $Enums } from '@prisma/generated/auth';
 import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { Auth } from '@common-gateway/auth/gateway-auth.decorator';
 
 @Controller('users')
 export class UsersController {
@@ -94,7 +94,7 @@ export class UsersController {
   public async read(
     @Query() query: ReadUserDto,
     @Auth() auth: AuthParamDto,
-  ): Promise<ReadUserResponseDto> {
+  ): Promise<ReadUserResponseDto[]> {
     const processedAuth = await this.authService.processAuthParam(auth);
     if (!processedAuth)
       throw new UnauthorizedException('you must be logged in to see users');

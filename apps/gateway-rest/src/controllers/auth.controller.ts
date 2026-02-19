@@ -2,7 +2,7 @@ import { Body, Controller, HttpStatus, Post } from '@nestjs/common';
 import {
   LoginDto,
   LoginResponseDto,
-} from '@contracts/microservice/auth/auth.dto';
+} from '@contracts/auth/providers/auth.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { AuthService } from '@contracts/auth/providers/auth.service';
 

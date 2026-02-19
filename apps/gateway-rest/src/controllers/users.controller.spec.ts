@@ -6,7 +6,7 @@ import {
   CreateUserDto,
   UpdateUserDto,
   ReadUserDto,
-} from '@contracts/microservice/auth/users.dto';
+} from '@contracts/auth/providers/users.dto';
 import { $Enums } from '@prisma/generated/auth';
 import {
   BadRequestException,
