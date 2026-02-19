@@ -10,3 +10,10 @@ export class ResponseExceptionDto {
   timestamp: string;
   path: string;
 }
+
+export class GraphQLResponseExceptionDto extends ResponseExceptionDto {
+  status: number;
+
+  // required to allow additional properties in the extensions object of GraphQLError
+  [key: string]: unknown;
+}

@@ -7,11 +7,17 @@ import {
   Logger,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { ResponseExceptionDto } from '@common-gateway/exception/gateway-exception.dto';
+import {
+  GraphQLResponseExceptionDto,
+  ResponseExceptionDto,
+} from '@common-gateway/exception/gateway-exception.dto';
+import { GraphQLError } from 'graphql/error';
+import type { GraphQLFormattedError } from 'graphql/index';
 
 @Catch()
 export class GatewayExceptionFilter implements ExceptionFilter {
   catch(exception: unknown, host: ArgumentsHost) {
+    const contextType = host.getType<'http' | 'graphql'>();
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
@@ -94,11 +100,64 @@ export class GatewayExceptionFilter implements ExceptionFilter {
     }
 
     // Construct the error response
-    const errorResponse: ResponseExceptionDto = {
-      message,
+    switch (contextType) {
+      case 'graphql': {
+        const graphqlMessage =
+          typeof message === 'string'
+            ? message
+            : `${Object.keys(message)[0]} is invalid: ${Object.values(Object.values(message)[0])[0]}`;
+
+        // this will be caught by graphql and formated as described in module definition
+        throw new GraphQLError(graphqlMessage, {
+          extensions: {
+            status,
+            message: message,
+            timestamp: new Date().toISOString(),
+          },
+        });
+      }
+      case 'http': {
+        const errorResponse: ResponseExceptionDto = {
+          message,
+          timestamp: new Date().toISOString(),
+          path: request.url,
+        };
+        response.status(status).json(errorResponse);
+        return;
+      }
+    }
+  }
+
+  public static FormatGraphQLError(
+    formattedError: GraphQLFormattedError,
+    rawError: unknown,
+  ): GraphQLFormattedError {
+    if (rawError instanceof GraphQLError) {
+      const extensions = {
+        status:
+          rawError.extensions?.status ||
+          formattedError.extensions?.status ||
+          500,
+        message: rawError.extensions?.message || formattedError.message,
+        timestamp: rawError.extensions?.timestamp || new Date().toISOString(),
+        path: formattedError.path?.join('/'),
+      } as GraphQLResponseExceptionDto;
+
+      return {
+        message: formattedError.message,
+        extensions,
+      };
+    }
+
+    const extensions = {
+      status: formattedError.extensions?.status || 500,
+      message: formattedError.message,
       timestamp: new Date().toISOString(),
-      path: request.url,
+      path: formattedError.path?.join('/'),
+    } as GraphQLResponseExceptionDto;
+    return {
+      message: formattedError.message,
+      extensions,
     };
-    response.status(status).json(errorResponse);
   }
 }
