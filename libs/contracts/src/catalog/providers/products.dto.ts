@@ -153,57 +153,95 @@ export class SearchProductDto {
 
 @ObjectType()
 export class SearchProductResponseDto {
+  @ApiProperty({ description: 'ID of the product', example: '12345' })
   @Field()
   id: string;
 
+  @ApiProperty({ description: 'Name of the product', example: 'Laptop' })
   @Field()
   name: string;
 
+  @ApiProperty({ description: 'URL friendly slug', example: 'test-product' })
   @Field()
   slug: string;
 
+  @ApiProperty({ description: 'Price of the product', example: 999 })
   @Field()
   price: number;
 
+  @ApiProperty({
+    description: 'Category of the product',
+    example: 'Electronics',
+  })
   @Field()
   category: string;
 
+  @ApiProperty({
+    description: 'Tags associated with the product',
+    example: ['technology', 'gadget'],
+  })
   @Field(() => [String])
   tags: string[];
 }
 
 @ObjectType()
 export class ReadProductResponseDto {
+  @ApiProperty({ description: 'ID of the product', example: '12345' })
   @Field()
   id: string;
 
+  @ApiProperty({ description: 'Name of the product', example: 'Laptop' })
   @Field()
   name: string;
 
+  @ApiProperty({ description: 'URL friendly slug', example: 'test-product' })
   @Field()
   slug: string;
 
+  @ApiProperty({
+    description: 'Product description',
+    example: 'This is a test product',
+  })
   @Field()
   description: string;
 
+  @ApiProperty({ description: 'Price of the product', example: 999.99 })
   @Field()
   price: number;
 
+  @ApiProperty({ description: 'Available stock count', example: 10 })
   @Field()
   stockCount: number;
 
+  @ApiProperty({
+    description: 'Category of the product',
+    example: 'Electronics',
+  })
   @Field()
   category: string;
 
+  @ApiProperty({
+    description: 'Tags associated with the product',
+    example: ['technology', 'gadget'],
+  })
   @Field(() => [String])
   tags: string[];
 
+  @ApiProperty({
+    description: 'Creation date of the product',
+    example: '2023-01-01T00:00:00.000Z',
+  })
   @Field()
   createdAt: Date;
 
+  @ApiProperty({
+    description: 'Last update date of the product',
+    example: '2023-01-02T00:00:00.000Z',
+  })
   @Field()
   updatedAt: Date;
 
+  @ApiProperty({ description: 'Deletion date of the product', example: null })
   @Field(() => Date, { nullable: true })
   deletedAt: Date | null;
 }

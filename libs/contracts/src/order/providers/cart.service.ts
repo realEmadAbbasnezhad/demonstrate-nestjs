@@ -3,7 +3,7 @@ import { ClientProxy } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
 import { OrderCommands } from '@contracts/order/order.commands';
 import {
-  CreateCartDto,
+  UpdateCartDto,
   CreateCartMicroserviceDto,
   ReadCartResponseDto,
 } from '@contracts/order/providers/cart.dto';
@@ -15,9 +15,12 @@ export class CartService {
     private readonly orderMicroservice: ClientProxy,
   ) {}
 
-  public create(id: number, body: CreateCartDto): Promise<ReadCartResponseDto> {
+  public update(
+    id: number,
+    body: UpdateCartDto,
+  ): Promise<ReadCartResponseDto[]> {
     return firstValueFrom(
-      this.orderMicroservice.send(OrderCommands.CartCreate, {
+      this.orderMicroservice.send(OrderCommands.CartUpdate, {
         id,
         ...body,
       } as CreateCartMicroserviceDto),

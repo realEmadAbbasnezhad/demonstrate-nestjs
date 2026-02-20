@@ -1,5 +1,5 @@
 export const OrderCommands = {
-  CartCreate: 'products.create',
+  CartUpdate: 'products.update',
   CartDelete: 'products.delete',
   CartRead: 'products.read',
 } as const;
