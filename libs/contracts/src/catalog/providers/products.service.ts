@@ -3,7 +3,7 @@ import { ClientProxy } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
 import {
   CreateProductDto,
-  FindProductResponseDto,
+  ReadProductResponseDto,
   SearchProductDto,
   SearchProductResponseDto,
   UpdateProductDto,
@@ -18,7 +18,7 @@ export class ProductsService {
     private readonly catalogMicroservice: ClientProxy,
   ) {}
 
-  public async create(body: CreateProductDto): Promise<FindProductResponseDto> {
+  public async create(body: CreateProductDto): Promise<ReadProductResponseDto> {
     return firstValueFrom(
       this.catalogMicroservice.send(CatalogCommands.ProductsCreate, body),
     );
@@ -30,7 +30,7 @@ export class ProductsService {
     );
   }
 
-  public read(id: string): Promise<FindProductResponseDto> {
+  public read(id: string): Promise<ReadProductResponseDto> {
     return firstValueFrom(
       this.catalogMicroservice.send(CatalogCommands.ProductsRead, id),
     );
@@ -39,7 +39,7 @@ export class ProductsService {
   public update(
     id: string,
     body: UpdateProductDto,
-  ): Promise<FindProductResponseDto> {
+  ): Promise<ReadProductResponseDto> {
     return firstValueFrom(
       this.catalogMicroservice.send(CatalogCommands.ProductsUpdate, {
         id,

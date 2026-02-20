@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import {
   CreateProductDto,
-  FindProductResponseDto,
+  ReadProductResponseDto,
   SearchProductDto,
   SearchProductResponseDto,
   UpdateProductDto,
@@ -31,7 +31,7 @@ export class ProductsService extends ProductsRepository {
     super();
   }
 
-  public async create(body: CreateProductDto): Promise<FindProductResponseDto> {
+  public async create(body: CreateProductDto): Promise<ReadProductResponseDto> {
     let result: Product | null = null;
     try {
       result = await this._createProduct({
@@ -64,8 +64,8 @@ export class ProductsService extends ProductsRepository {
     return result;
   }
 
-  public async read(id: string): Promise<FindProductResponseDto> {
-    const cache = await this.cacheManager.get<FindProductResponseDto>(
+  public async read(id: string): Promise<ReadProductResponseDto> {
+    const cache = await this.cacheManager.get<ReadProductResponseDto>(
       `product.${id}`,
     );
     if (cache) return cache;
@@ -154,19 +154,23 @@ export class ProductsService extends ProductsRepository {
       const result =
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         await this.esService.search<SearchProductResponseDto>(searchQuery);
-      if ((result.hits.total as SearchTotalHits).value == 0)
+      if ((result.hits.total as SearchTotalHits).value == 0) {
+        // noinspection ExceptionCaughtLocallyJS
         throw new NotFoundException(
           `No products found matching the search criteria`,
         );
+      }
       return result.hits.hits.map((hit) => hit._source!) ?? [];
     } catch (e) {
       if (e instanceof errors.ResponseError) {
+        if (body.sortField && e.message.includes(body.sortField))
+          throw new BadRequestException(`Invalid sort field`);
+
         throw new InternalServerErrorException(e.message);
       }
       if (e instanceof HttpException) {
         throw e;
       }
-
       throw new InternalServerErrorException(e);
     }
   }
@@ -174,7 +178,7 @@ export class ProductsService extends ProductsRepository {
   public async update(
     id: string,
     body: Omit<UpdateProductDto, 'id'>,
-  ): Promise<FindProductResponseDto> {
+  ): Promise<ReadProductResponseDto> {
     let result: Product | null = null;
     try {
       result = await this._updateProduct(id, body);
@@ -205,6 +209,7 @@ export class ProductsService extends ProductsRepository {
     try {
       const resalt = await this._readProductById(id);
       if (resalt == null || resalt.deletedAt != null) {
+        // noinspection ExceptionCaughtLocallyJS
         throw new Prisma.PrismaClientKnownRequestError('', {
           code: 'P2025',
           clientVersion: '',

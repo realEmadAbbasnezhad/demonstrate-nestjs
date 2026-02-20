@@ -173,7 +173,7 @@ export class SearchProductResponseDto {
 }
 
 @ObjectType()
-export class FindProductResponseDto {
+export class ReadProductResponseDto {
   @Field()
   id: string;
 

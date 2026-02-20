@@ -2,7 +2,7 @@ import { Controller } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import {
   CreateProductDto,
-  FindProductResponseDto,
+  ReadProductResponseDto,
   SearchProductDto,
   SearchProductResponseDto,
   type UpdateProductMicroserviceDto,
@@ -18,12 +18,12 @@ export class ProductsController {
   @MessagePattern(CatalogCommands.ProductsCreate)
   create(
     @Payload() payload: CreateProductDto,
-  ): Promise<FindProductResponseDto> {
+  ): Promise<ReadProductResponseDto> {
     return this.productsService.create(payload);
   }
 
   @MessagePattern(CatalogCommands.ProductsRead)
-  read(id: string): Promise<FindProductResponseDto> {
+  read(id: string): Promise<ReadProductResponseDto> {
     return this.productsService.read(id);
   }
   @MessagePattern(CatalogCommands.ProductsSearch)
@@ -36,7 +36,7 @@ export class ProductsController {
   @MessagePattern(CatalogCommands.ProductsUpdate)
   update(
     @Payload() payload: UpdateProductMicroserviceDto,
-  ): Promise<FindProductResponseDto> {
+  ): Promise<ReadProductResponseDto> {
     const finalPayload = runtimeOmit(payload, ['id']);
     return this.productsService.update(payload.id, finalPayload);
   }
