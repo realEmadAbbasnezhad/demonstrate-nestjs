@@ -32,4 +32,6 @@ export const ENV_SCHEMA = Joi.object({
     .default('47a8af5125bf6fa3'),
 
   CATALOG_PORT: Joi.number().port().default(3001),
+
+  ORDER_PORT: Joi.number().port().default(3002),
 } as Joi.SchemaMap);
