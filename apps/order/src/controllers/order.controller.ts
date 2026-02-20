@@ -8,32 +8,33 @@ import {
   CreateShippingResponseDto,
   ReadOrderResponseDto,
 } from '@contracts/order/providers/order.dto';
+import { OrderService } from '@order/providers/order.service';
 
 @Controller()
 export class OrderController {
-  //constructor(private readonly orderService: OrderService) {}
+  constructor(private readonly orderService: OrderService) {}
 
   @MessagePattern(OrderCommands.OrderCreate)
   public async create(
     @Payload() payload: CreateOrderMicroserviceDto,
   ): Promise<CreateOrderResponseDto> {
-    return Promise.resolve(payload);
+    return this.orderService.create(payload.id, payload);
   }
 
   @MessagePattern(OrderCommands.OrderShipping)
   public async createShipping(
     @Payload() payload: CreateShippingMicroserviceDto,
   ): Promise<CreateShippingResponseDto> {
-    return Promise.resolve(payload);
+    return this.orderService.createShipping(payload.id, payload);
   }
 
   @MessagePattern(OrderCommands.OrderRead)
   public async read(@Payload() id: number): Promise<ReadOrderResponseDto> {
-    return Promise.resolve({});
+    return this.orderService.read(id);
   }
 
   @MessagePattern(OrderCommands.OrderDelete)
   public async delete(@Payload() id: number): Promise<null> {
-    return Promise.resolve(null);
+    return this.orderService.delete(id);
   }
 }
