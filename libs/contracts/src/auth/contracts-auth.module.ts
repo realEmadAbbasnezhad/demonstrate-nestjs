@@ -19,6 +19,6 @@ import { UsersService } from '@contracts/auth/providers/users.service';
   ],
   controllers: [],
   providers: [AuthService, UsersService],
-  exports: [AuthService, UsersService],
+  exports: [AuthService, UsersService, ClientsModule],
 })
 export class AuthContractsModule {}
