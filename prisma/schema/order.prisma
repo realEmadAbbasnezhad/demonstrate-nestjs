@@ -1,0 +1,71 @@
+generator client {
+  provider     = "prisma-client-js"
+  output       = "../generated/order"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("PG_ORDER_URL")
+}
+
+model Cart {
+  userId Int @id
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  orderProducts CartProduct[] @relation()
+
+  @@index([userId])
+  @@map("carts")
+}
+
+model CartProduct {
+  id        String @id @default(uuid())
+  cartId    Int
+  productId String
+  quantity  Int
+
+  cart Cart @relation(fields: [cartId], references: [userId])
+
+  @@map("carts_products")
+}
+
+enum OrderStatus {
+  RESERVED
+  NEED_ADMIN_ATTENTION
+  SHIPPED
+}
+
+model Order {
+  id     Int @id @default(autoincrement())
+  userId Int
+
+  shippingProvince   String
+  shippingCity       String
+  shippingAddress    String
+  shippingPostalCode Int?
+
+  status OrderStatus @default(RESERVED)
+
+  updatedAt DateTime  @updatedAt
+  createdAt DateTime  @default(now())
+  deletedAt DateTime?
+
+  orderProducts OrderProduct[] @relation()
+
+  @@index([userId])
+  @@map("orders")
+}
+
+model OrderProduct {
+  id        String @id @default(uuid())
+  orderId   Int
+  productId String
+  quantity  Int
+
+  order Order @relation(fields: [orderId], references: [id])
+
+  @@map("orders_products")
+}

@@ -1,7 +1,10 @@
 import * as Joi from 'joi';
 
 export const ENV_SCHEMA = Joi.object({
-  PG_URL: Joi.string()
+  PG_AUTH_URL: Joi.string()
+    .uri({ scheme: ['postgres', 'postgresql'] })
+    .required(),
+  PG_ORDER_URL: Joi.string()
     .uri({ scheme: ['postgres', 'postgresql'] })
     .required(),
   MONGO_URL: Joi.string()
