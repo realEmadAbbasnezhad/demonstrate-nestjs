@@ -20,7 +20,7 @@ import type { AuthParamDto } from '@contracts/auth/providers/auth.dto';
 import { $Enums } from '@prisma/generated/auth';
 import {
   CreateProductDto,
-  FindProductResponseDto,
+  ReadProductResponseDto,
   SearchProductDto,
   SearchProductResponseDto,
   UpdateProductDto,
@@ -38,7 +38,7 @@ export class ProductsController {
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'Success',
-    type: FindProductResponseDto,
+    type: ReadProductResponseDto,
   })
   @ApiResponse({
     status: HttpStatus.BAD_REQUEST,
@@ -60,7 +60,7 @@ export class ProductsController {
   async create(
     @Body() body: CreateProductDto,
     @Auth() auth: AuthParamDto,
-  ): Promise<FindProductResponseDto> {
+  ): Promise<ReadProductResponseDto> {
     const processedAuth = await this.authService.processAuthParam(auth);
     if (!processedAuth)
       throw new UnauthorizedException(
@@ -80,6 +80,11 @@ export class ProductsController {
     isArray: true,
   })
   @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description:
+      'A lot can go wrong with the search query, check the error message for details',
+  })
+  @ApiResponse({
     status: HttpStatus.NOT_FOUND,
     description: 'No products found matching the search criteria',
   })
@@ -94,7 +99,7 @@ export class ProductsController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Success',
-    type: FindProductResponseDto,
+    type: ReadProductResponseDto,
   })
   @ApiResponse({
     status: HttpStatus.BAD_REQUEST,
@@ -105,7 +110,7 @@ export class ProductsController {
     description: 'Product not found',
   })
   @Get(':id')
-  async read(@Param('id') id: string): Promise<FindProductResponseDto> {
+  async read(@Param('id') id: string): Promise<ReadProductResponseDto> {
     return this.productsService.read(id);
   }
 
@@ -114,7 +119,7 @@ export class ProductsController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Success',
-    type: FindProductResponseDto,
+    type: ReadProductResponseDto,
   })
   @ApiResponse({
     status: HttpStatus.BAD_REQUEST,
@@ -141,7 +146,7 @@ export class ProductsController {
     @Param('id') id: string,
     @Body() body: UpdateProductDto,
     @Auth() auth: AuthParamDto,
-  ): Promise<FindProductResponseDto> {
+  ): Promise<ReadProductResponseDto> {
     if (!body) throw new BadRequestException('no data provided to update');
     if (
       !body.name &&

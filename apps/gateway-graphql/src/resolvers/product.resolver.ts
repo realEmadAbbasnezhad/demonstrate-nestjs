@@ -10,25 +10,25 @@ import { Auth } from '@common-gateway/auth/gateway-auth.decorator';
 import { $Enums } from '@prisma/generated/auth';
 import {
   CreateProductDto,
-  FindProductResponseDto,
+  ReadProductResponseDto,
   SearchProductDto,
   SearchProductResponseDto,
   UpdateProductDto,
 } from '@contracts/catalog/providers/products.dto';
 import { ProductsService } from '@contracts/catalog/providers/products.service';
 
-@Resolver(() => FindProductResponseDto)
+@Resolver(() => ReadProductResponseDto)
 export class ProductResolver {
   constructor(
     private readonly productsService: ProductsService,
     private readonly authService: AuthService,
   ) {}
 
-  @Mutation(() => FindProductResponseDto)
+  @Mutation(() => ReadProductResponseDto)
   public async productCreate(
     @Args('input') input: CreateProductDto,
     @Auth() auth: AuthParamDto,
-  ): Promise<FindProductResponseDto> {
+  ): Promise<ReadProductResponseDto> {
     const processedAuth = await this.authService.processAuthParam(auth);
     if (!processedAuth)
       throw new UnauthorizedException(
@@ -47,19 +47,19 @@ export class ProductResolver {
     return this.productsService.search(input);
   }
 
-  @Query(() => FindProductResponseDto)
+  @Query(() => ReadProductResponseDto)
   public async productRead(
     @Args('id') id: string,
-  ): Promise<FindProductResponseDto> {
+  ): Promise<ReadProductResponseDto> {
     return this.productsService.read(id);
   }
 
-  @Mutation(() => FindProductResponseDto)
+  @Mutation(() => ReadProductResponseDto)
   public async productUpdate(
     @Args('id') id: string,
     @Args('input') body: UpdateProductDto,
     @Auth() auth: AuthParamDto,
-  ): Promise<FindProductResponseDto> {
+  ): Promise<ReadProductResponseDto> {
     if (!body) throw new BadRequestException('no data provided to update');
     if (
       !body.name &&
