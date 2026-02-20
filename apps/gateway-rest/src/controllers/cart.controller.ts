@@ -69,7 +69,7 @@ export class CartController {
 
   @ApiOperation({ summary: 'remove the whole cart' })
   @Delete(':id')
-  async delete(
+  public async delete(
     @Param('id') id: number,
     @Auth() auth: AuthParamDto,
   ): Promise<null> {

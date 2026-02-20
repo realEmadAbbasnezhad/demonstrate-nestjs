@@ -7,6 +7,7 @@ import { AuthContractsModule } from '@contracts/auth/contracts-auth.module';
 import { CatalogContractsModule } from '@contracts/catalog/contracts-catalog.module';
 import { CartController } from '@gateway-rest/controllers/cart.controller';
 import { OrderContractsModule } from '@contracts/order/contracts-order.module';
+import { OrderController } from '@gateway-rest/controllers/order.controller';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { OrderContractsModule } from '@contracts/order/contracts-order.module';
     UsersController,
     ProductsController,
     CartController,
+    OrderController,
   ],
   providers: [],
 })

@@ -1,16 +1,5 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  ForbiddenException,
-  Get,
-  Param,
-  Post,
-  Query,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { AuthService } from '@contracts/auth/providers/auth.service';
-import { ApiOperation } from '@nestjs/swagger';
 import { Auth } from '@common-gateway/auth/gateway-auth.decorator';
 import type { AuthParamDto } from '@contracts/auth/providers/auth.dto';
 import { $Enums } from '@prisma/generated/auth';
@@ -22,19 +11,19 @@ import {
   CreateShippingResponseDto,
 } from '@contracts/order/providers/order.dto';
 import { OrderService } from '@contracts/order/providers/order.service';
+import { UnauthorizedException, ForbiddenException } from '@nestjs/common';
 
-@Controller('orders')
-export class OrderController {
+@Resolver()
+export class OrderResolver {
   constructor(
     private readonly orderService: OrderService,
     private readonly authService: AuthService,
   ) {}
 
-  @ApiOperation({ summary: 'reserve a cart' })
-  @Post(':id')
+  @Mutation(() => CreateOrderResponseDto, { name: 'createOrder' })
   public async create(
-    @Param('id') id: number,
-    @Body() body: CreateOrderDto,
+    @Args('id') id: number,
+    @Args('body') body: CreateOrderDto,
     @Auth() auth: AuthParamDto,
   ): Promise<CreateOrderResponseDto> {
     const processedAuth = await this.authService.processAuthParam(auth);
@@ -52,11 +41,10 @@ export class OrderController {
     return await this.orderService.create(id, body);
   }
 
-  @ApiOperation({ summary: 'set shipping info' })
-  @Post(':id/shipping')
+  @Mutation(() => CreateShippingResponseDto, { name: 'createShipping' })
   public async createShipping(
-    @Param('id') id: number,
-    @Body() body: CreateShippingDto,
+    @Args('id') id: number,
+    @Args('body') body: CreateShippingDto,
     @Auth() auth: AuthParamDto,
   ): Promise<CreateShippingResponseDto> {
     const processedAuth = await this.authService.processAuthParam(auth);
@@ -76,12 +64,10 @@ export class OrderController {
     return await this.orderService.createShipping(id, body);
   }
 
-  @ApiOperation({ summary: 'get status of order' })
-  @Get(':id')
+  @Query(() => ReadOrderResponseDto, { name: 'readOrder' })
   public async read(
-    @Query('adminAttention') adminAttention: boolean,
-    @Param('id')
-    id: number,
+    @Args('adminAttention') adminAttention: boolean,
+    @Args('id') id: number,
     @Auth() auth: AuthParamDto,
   ): Promise<ReadOrderResponseDto> {
     const processedAuth = await this.authService.processAuthParam(auth);
@@ -99,12 +85,11 @@ export class OrderController {
     return this.orderService.read(id);
   }
 
-  @ApiOperation({ summary: 'cancel a order from someone else' })
-  @Delete(':id')
+  @Mutation(() => Boolean, { name: 'deleteOrder' })
   public async delete(
-    @Param('id') id: number,
+    @Args('id') id: number,
     @Auth() auth: AuthParamDto,
-  ): Promise<null> {
+  ): Promise<boolean> {
     const processedAuth = await this.authService.processAuthParam(auth);
     if (!processedAuth)
       throw new UnauthorizedException('you must be logged in to cancel order');
@@ -115,6 +100,7 @@ export class OrderController {
         'Only admins can cancel order from someone else',
       );
 
-    return this.orderService.delete(id);
+    await this.orderService.delete(id);
+    return true;
   }
 }
