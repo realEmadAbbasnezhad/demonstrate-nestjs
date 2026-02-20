@@ -1,12 +1,16 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import {
-  GetOrderResponseDto,
-  ReserveCartDto,
-  ReserveCartResponseDto,
-  ShippingInfoDto,
-  ShippingInfoResponseDto,
-} from '@contracts/microservice/order/order.dto';
+  CreateOrderDto,
+  CreateOrderMicroserviceDto,
+  CreateOrderResponseDto,
+  CreateShippingDto,
+  CreateShippingMicroserviceDto,
+  CreateShippingResponseDto,
+  ReadOrderResponseDto,
+} from '@contracts/order/providers/order.dto';
+import { firstValueFrom } from 'rxjs';
+import { OrderCommands } from '@contracts/order/order.commands';
 
 @Injectable()
 export class OrderService {
@@ -15,51 +19,39 @@ export class OrderService {
     private readonly orderMicroservice: ClientProxy,
   ) {}
 
-  public reserve(
+  public create(
     id: number,
-    body: ReserveCartDto,
-  ): Promise<ReserveCartResponseDto> {
-    return Promise.resolve(body);
-    //return firstValueFrom(
-    //  this.catalogMicroservice.send(OrderCommands.CartCreate, body),
-    //);
+    body: CreateOrderDto,
+  ): Promise<CreateOrderResponseDto> {
+    return firstValueFrom(
+      this.orderMicroservice.send(OrderCommands.OrderCreate, {
+        ...body,
+        id,
+      } as CreateOrderMicroserviceDto),
+    );
   }
 
-  public shipping(
+  public createShipping(
     id: number,
-    body: ShippingInfoDto,
-  ): Promise<ShippingInfoResponseDto> {
-    return Promise.resolve(body);
-    //return firstValueFrom(
-    //  this.catalogMicroservice.send(OrderCommands.CartCreate, body),
-    //);
+    body: CreateShippingDto,
+  ): Promise<CreateShippingResponseDto> {
+    return firstValueFrom(
+      this.orderMicroservice.send(OrderCommands.OrderShipping, {
+        ...body,
+        id,
+      } as CreateShippingMicroserviceDto),
+    );
   }
 
-  public get(id: number): Promise<GetOrderResponseDto> {
-    return Promise.resolve(id);
-    //return firstValueFrom(
-    //  this.catalogMicroservice.send(OrderCommands.CartCreate, body),
-    //);
+  public read(id: number): Promise<ReadOrderResponseDto> {
+    return firstValueFrom(
+      this.orderMicroservice.send(OrderCommands.OrderRead, id),
+    );
   }
 
-  public cancel(id: number): Promise<GetOrderResponseDto> {
-    return Promise.resolve(id);
-    //return firstValueFrom(
-    //  this.catalogMicroservice.send(OrderCommands.CartCreate, body),
-    //);
-  }
-
-  public adminAttention(): Promise<GetOrderResponseDto[]> {
-    return Promise.resolve([]);
-    //return firstValueFrom(
-    //  this.catalogMicroservice.send(OrderCommands.CartCreate, body),
-    //);
-  }
-
-  public adminAttentionOne(id: number): Promise<GetOrderResponseDto> {
-    return Promise.resolve(id);
-    //return firstValueFrom(
-    //  this.catalogMicroservice.send(OrderCommands.CartCreate, body),
-    //);
+  public delete(id: number): Promise<null> {
+    return firstValueFrom(
+      this.orderMicroservice.send(OrderCommands.OrderDelete, id),
+    );
   }
 }

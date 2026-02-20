@@ -1,10 +1,14 @@
-export class ReserveCartDto {}
-export class ReserveCartResponseDto {}
+export class CreateOrderDto {}
+export class CreateOrderResponseDto {}
 
-export class ShippingInfoDto {}
-export class ShippingInfoResponseDto {}
+export class CreateShippingDto {}
+export class CreateShippingResponseDto {}
 
-export class GetOrderResponseDto {}
+export class ReadOrderResponseDto {}
 
-export class AdminAttentionDto {}
-export class AdminAttentionResponseDto {}
+export class CreateOrderMicroserviceDto extends CreateOrderDto {
+  id: number;
+}
+export class CreateShippingMicroserviceDto extends CreateShippingDto {
+  id: number;
+}
