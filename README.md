@@ -1,98 +1,263 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Demonstrate NestJS - Notice Searching E-Commerce Backend
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+A comprehensive demonstration backend project for a notice searching application - an e-commerce platform focusing on product catalog and search capabilities without order and checkout functionality. Built with NestJS microservices architecture, featuring dual API gateways (RESTful & GraphQL) and multiple database technologies.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## 🎯 Project Overview
 
-## Description
+This project showcases modern backend development practices using NestJS microservices architecture. It implements a notice searching system with advanced search capabilities, dual API gateways, and multiple database integrations. The system is designed to demonstrate best practices in microservices communication, data persistence strategies, and API design patterns.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## ✨ Features
 
-## Project setup
+- 🏗️ **Microservices Architecture** - Modular services with clear separation of concerns
+- 🛒 **E-Commerce Core** - Product catalog and advanced search without order/checkout
+- 🔍 **Advanced Search** - Elasticsearch-powered notice searching with full-text capabilities
+- 🌐 **Dual API Gateways** - Both RESTful and GraphQL endpoints for flexible client integration
+- 🗄️ **Multi-Database Support** - PostgreSQL for relational data, MongoDB for documents, Elasticsearch for search
+- 🔐 **Authentication & Authorization** - JWT-based authentication with role-based access control
+- 📊 **Prisma ORM** - Type-safe database access with migrations and schema management
+- 📝 **API Documentation** - Integrated Swagger/OpenAPI documentation for REST endpoints
+- 🧪 **Testing** - Comprehensive unit and integration tests
+- 🐳 **Docker Support** - Containerized database services for easy setup
+
+## 🛠️ Tech Stack
+
+### Core Framework
+- **NestJS** - A progressive Node.js framework for building efficient, reliable and scalable server-side applications. Built with TypeScript and combines elements of OOP, FP, and FRP.
+
+### API Gateways
+- **RESTful API** - Traditional REST endpoints with Swagger documentation for easy testing and integration
+- **GraphQL** - Flexible query language using Apollo Server for efficient data fetching and real-time capabilities
+
+### Databases
+- **PostgreSQL** - Powerful open-source relational database for structured data with ACID compliance
+- **MongoDB** - NoSQL document database for flexible schema design and handling unstructured data
+- **Elasticsearch** - Distributed search and analytics engine for full-text search, logging, and real-time analytics
+
+### ORM & Data Management
+- **Prisma** - Next-generation ORM providing type-safe database access, automated migrations, and intuitive data modeling
+
+### Language & Runtime
+- **TypeScript** - Strongly typed superset of JavaScript providing enhanced IDE support, type safety, and better maintainability
+- **Node.js** - JavaScript runtime built on Chrome's V8 engine for building fast and scalable network applications
+
+### Microservices Communication
+- **NestJS Microservices** - Built-in support for TCP, Redis, NATS, RabbitMQ, and other transport layers
+
+### Security
+- **JWT (JSON Web Tokens)** - Secure authentication mechanism for stateless API authentication
+- **Helmet** - Express middleware for setting security-related HTTP headers
+- **Class Validator** - Decorator-based validation for DTO classes
+
+### Caching
+- **Cache Manager** - Multi-layer caching solution with Redis adapter for improved performance
+- **Redis** - In-memory data structure store used as cache and message broker
+
+### Development Tools
+- **ESLint** - Static code analysis tool for identifying problematic patterns and enforcing code quality
+- **Prettier** - Opinionated code formatter for consistent code style
+- **Jest** - Delightful JavaScript testing framework with focus on simplicity
+
+### Documentation
+- **Swagger/OpenAPI** - API documentation specification with interactive UI for testing endpoints
+
+## 📋 Prerequisites
+
+Before you begin, ensure you have the following installed:
+
+- Node.js (v18 or higher)
+- npm or yarn
+- Docker and Docker Compose
+- Git
+
+## 🚀 Getting Started
+
+### 1. Clone the Repository
 
 ```bash
-$ npm install
+git clone https://github.com/realEmadAbbasnezhad/demonstrate-nestjs.git
+cd demonstrate-nestjs
 ```
 
-## Compile and run the project
+### 2. Install Dependencies
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+npm install
 ```
 
-## Run tests
+### 3. Start Database Services
+
+Run Docker Compose to start PostgreSQL, MongoDB, Elasticsearch, and Redis:
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+docker-compose up -d
 ```
 
-## Deployment
+### 4. Configure Environment Variables
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+Create a `.env` file in the root directory based on `template.env` and configure your environment variables:
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+```env
+# Database
+DATABASE_URL="postgresql://user:password@localhost:5432/demonstrate"
+MONGODB_URI="mongodb://localhost:27017/demonstrate"
+ELASTICSEARCH_NODE="http://localhost:9200"
+
+# Redis
+REDIS_URL="redis://localhost:6379"
+
+# JWT
+JWT_SECRET="your-secret-key"
+JWT_EXPIRATION="3600"
+
+# Microservices Ports
+AUTH_SERVICE_PORT=3001
+CATALOG_SERVICE_PORT=3002
+GATEWAY_REST_PORT=3000
+GATEWAY_GRAPHQL_PORT=3003
+```
+
+### 5. Run Database Migrations
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+npx prisma migrate dev
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### 6. Start the Services
 
-## Resources
+You need to run all microservices in separate terminal windows:
 
-Check out a few resources that may come in handy when working with NestJS:
+**Terminal 1 - Auth Service:**
+```bash
+npm run start-auth:dev
+```
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+**Terminal 2 - Catalog Service:**
+```bash
+npm run start-catalog:dev
+```
 
-## Support
+**Terminal 3 - REST Gateway:**
+```bash
+npm run start-gateway-rest:dev
+```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+**Terminal 4 - GraphQL Gateway:**
+```bash
+npm run start-gateway-graphql:dev
+```
 
-## Stay in touch
+### 7. Access the Application
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+- **REST API Documentation:** http://localhost:8080/swagger
+- **GraphQL Playground:** http://localhost:8081/graphql
+- **REST Gateway:** http://localhost:8080
+- **GraphQL Gateway:** http://localhost:8081/graphql
 
-## License
+## 🧪 Running Tests
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+### Unit Tests
+
+Run all unit tests:
+
+```bash
+npm test
+```
+
+### Watch Mode
+
+Run tests in watch mode for development:
+
+```bash
+npm run test:watch
+```
+
+### Coverage Report
+
+Generate test coverage report:
+
+```bash
+npm run test:cov
+```
+
+## 🏗️ Project Structure
+
+```
+demonstrate-nestjs/
+├── apps/
+│   ├── auth/                 # Authentication microservice
+│   ├── catalog/              # Catalog microservice
+│   ├── order/                # Order microservice
+│   ├── gateway-rest/         # RESTful API gateway
+│   └── gateway-graphql/      # GraphQL API gateway
+├── libs/
+│   ├── common/               # Shared utilities and helpers
+│   ├── common-gateway/       # Gateway-specific shared code
+│   ├── common-microservice/  # Microservice-specific shared code
+│   └── contracts/            # Shared interfaces and DTOs
+└── prisma/                   # Prisma schema definitions
+```
+
+## 🔧 Available Scripts
+
+- `npm run build` - Build all services for production
+- `npm run format` - Format code using Prettier
+- `npm run lint` - Lint and fix code using ESLint
+- `npm test` - Run unit tests
+- `npm run test:watch` - Run tests in watch mode
+- `npm run test:cov` - Generate test coverage report
+- `npm run test:e2e` - Run end-to-end tests
+- `npm run start-auth:dev` - Start auth microservice in development mode
+- `npm run start-catalog:dev` - Start catalog microservice in development mode
+- `npm run start-gateway-rest:dev` - Start REST gateway in development mode
+- `npm run start-gateway-graphql:dev` - Start GraphQL gateway in development mode
+
+## 🔐 Authentication
+
+The system uses JWT-based authentication. To access protected endpoints:
+
+1. Register or login to get a JWT token
+2. Include the token in the Authorization header:
+   ```
+   Authorization: Bearer <your-jwt-token>
+   ```
+
+### Roles
+
+- **ADMIN** - Full access to all resources
+- **CUSTOMER** - Access to own resources and public endpoints
+- **ANONYMOUS** - Limited access to public endpoints
+
+## 📚 API Documentation
+
+### REST API
+
+Access the Swagger UI at http://localhost:8080/swagger for interactive API documentation.
+
+Key endpoints:
+- `/auth` - Authentication and user management
+- `/products` - Product catalog operations
+- `/cart` - Shopping cart management
+- `/orders` - Order operations
+
+### GraphQL API
+
+Access the GraphQL Playground at http://localhost:8081/graphql for interactive query testing.
+
+Example queries and mutations are available in the playground.
+
+## 🏢 Microservices
+
+### Auth Service
+Handles user authentication, authorization, and user management. Manages JWT token generation and validation.
+
+### Catalog Service
+Manages product catalog, including CRUD operations and search functionality powered by Elasticsearch.
+
+### Order Service
+Handles cart management and order operations (without checkout/payment functionality).
+
+### REST Gateway
+Provides RESTful API endpoints with Swagger documentation. Acts as the entry point for REST clients.
+
+### GraphQL Gateway
+Provides GraphQL API with schema stitching from multiple microservices. Offers flexible querying capabilities.
