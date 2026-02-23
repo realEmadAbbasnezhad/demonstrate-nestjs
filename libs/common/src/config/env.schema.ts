@@ -4,9 +4,6 @@ export const ENV_SCHEMA = Joi.object({
   PG_AUTH_URL: Joi.string()
     .uri({ scheme: ['postgres', 'postgresql'] })
     .required(),
-  PG_ORDER_URL: Joi.string()
-    .uri({ scheme: ['postgres', 'postgresql'] })
-    .required(),
   MONGO_URL: Joi.string()
     .uri({ scheme: ['mongodb', 'mongodb+srv'] })
     .required(),
@@ -35,6 +32,4 @@ export const ENV_SCHEMA = Joi.object({
     .default('47a8af5125bf6fa3'),
 
   CATALOG_PORT: Joi.number().port().default(3001),
-
-  ORDER_PORT: Joi.number().port().default(3002),
 } as Joi.SchemaMap);

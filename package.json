@@ -11,7 +11,6 @@
     "start-gateway-rest:dev": "nest start gateway-rest --debug --watch",
     "start-auth:dev": "nest start auth --debug --watch",
     "start-catalog:dev": "nest start catalog --debug --watch",
-    "start-order:dev": "nest start order --debug --watch",
     "start-gateway-graphql:dev": "nest start gateway-graphql --debug --watch",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
@@ -103,7 +102,6 @@
       "^@contracts/(.*)$": "<rootDir>/libs/contracts/src/$1",
       "^@gateway-rest/(.*)$": "<rootDir>/apps/gateway-rest/src/$1",
       "^@gateway-graphql/(.*)$": "<rootDir>/apps/gateway-graphql/src/$1",
-      "^@order/(.*)$": "<rootDir>/apps/order/src/$1",
       "^@prisma/(.*)$": "<rootDir>/prisma/$1"
     }
   }

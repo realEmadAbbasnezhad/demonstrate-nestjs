@@ -30,7 +30,6 @@
       "@contracts/*": ["libs/contracts/src/*"],
       "@gateway-rest/*": ["apps/gateway-rest/src/*"],
       "@gateway-graphql/*": ["apps/gateway-graphql/src/*"],
-      "@order/*": ["apps/order/src/*"],
       "@prisma/*": ["prisma/*"]
     }
   }
